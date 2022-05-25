@@ -1,0 +1,39 @@
+<#include "/admin/common/_layout.html"/>
+<@layout>
+<#include "/admin/content/top.html"/>
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  
+  <tr>
+    <td><table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#a8c7ce">
+      <tr>
+        <td width="4%" height="20" bgcolor="d3eaef" class="STYLE10"><div align="center">
+          <input type="checkbox" onclick='Pn.checkbox("ids",this.checked)' />
+        </div></td>
+        <td width="10%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">昵称</span></div></td>
+        <td width="50%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">评论内容</span></div></td>
+		<td width="10%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">发布日期</span></div></td>
+        <td width="30%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">基本操作</span></div></td>
+      </tr>
+      <form id="tableForm" method="post">
+        <#list commentPage.getList() as x>
+  <tr>
+        <td height="20" bgcolor="#FFFFFF"><div align="center">
+          <input type="checkbox" name="ids" value="${x.id}" />
+        </div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE6"><div align="center"><span class="STYLE19">${x.nick!}</span></div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">${x.txt!}</div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE6"><div align="center"><span class="STYLE19">${x.release_date?string('yyyy-MM-dd')}</span></div></td>
+        
+        <td height="20" bgcolor="#FFFFFF"><div align="center" class="STYLE21">
+        <a href="/admin/content/delete_comment?id=${x.id}&cid=${cid}">删除</a></div></td>
+  </tr>
+  </#list>
+  </form>
+    </table></td>
+  </tr>
+  <tr>
+    <td height="30"><#include "/admin/common/_paginate.html" />
+	<@paginate currentPage=commentPage.pageNumber totalPage=commentPage.totalPage totalRow=commentPage.totalRow actionUrl="/admin/user/" /></td>
+  </tr>
+</table>
+</@layout>

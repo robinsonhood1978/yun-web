@@ -1,0 +1,65 @@
+<table id="prototype" width="100%" class="pn-ftable" cellpadding="2" cellspacing="1" border="0">
+<tr>
+	<td width="15%" class="pn-flabel pn-flabel-h">
+		<span class="pn-frequired">*</span>关键字:
+	</td>
+	<td class="pn-fcontent">
+		<input type="text" size="30" maxlength="20" id="word" name="keywords.word" value="${(keywords.word)!}" onblur="fun_isContains(this.value)" />
+		<span id="isContains"></span>
+	</td>
+</tr>
+<tr>
+	<td colspan="2" class="pn-fbutton">
+		<input type="hidden" name="myToken" value="${myToken!}" />
+		<input type="hidden" name="keywords.id" value="${(keywords.id)!}" />
+		<input type="hidden" id="canSubmit" name="canSubmit" value="0" />
+		<img src="/m/images/bc.gif" width="62" height="18" onClick="fun_onSubmit();"/> <img src="/m/images/cz.gif" width="62" height="18" onClick="history.go(-1);"/>
+	</td>
+</tr>
+</table>
+<script type="text/javascript">
+function fun_onSubmit(){
+	var word=document.getElementById("word").value;
+	if(word==null || word==""){
+		alert("请填写关键字");
+		return;
+	}
+	var canSubmit=document.getElementById("canSubmit").value;
+	if(canSubmit==0){
+		alert("请填写正确信息");
+		return;
+	}
+	document.myForm.submit();
+}
+//当失去焦点的时候判断时候已经包含了要保存的关键字事件 
+function fun_isContains(keyword){
+	if(window.XMLHttpRequest){
+		http_request=new XMLHttpRequest();
+	}else if(window.ActiveXObject){
+		http_request=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	if(null == keyword || "" == keyword){
+		return;
+	}
+	var content="keyword="+keyword;
+	http_request.open("post","/admin/content/isContainsKey",true);
+	http_request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	http_request.send(content);
+	http_request.onreadystatechange = returnKeywords;
+}
+function returnKeywords(){
+	if(http_request.readyState==4){
+		if(http_request.status == 200){
+			var result=http_request.responseText;
+			document.getElementById("isContains").innerHTML=result;
+			if(result=="<font color=green >*关键词可用*</font>"){
+				document.getElementById("canSubmit").value=1;
+			}else{
+				document.getElementById("canSubmit").value=0;
+			}
+		}else{
+			alert("出现异常,请刷新后重试");
+		}
+	}
+}
+</script>

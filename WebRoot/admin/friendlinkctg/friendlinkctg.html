@@ -1,0 +1,62 @@
+<#include "/admin/common/_layout.html"/>
+<@layout>
+<#include "/admin/friendlinkctg/top.html"/>
+<!-- 
+<table width="100%" border="0" cellspacing="0" cellpadding="0" style="table-layout:fixed;">
+  <tr>
+    <td height="25" background="/m/images/right_10.gif" style="border-top:solid 1px #b2cdd2; border-bottom:solid 1px #b2cdd2 "><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td height="25"  style="width:5px;">&nbsp;</td>
+        <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="600" height="20" align="center" >
+              <form id="searchForm" name="searchForm" action="/admin/friendlinkctg" method="post">
+  	                              商品名称：<input name="name" size=10 value="${name!}">
+  	           <input type="button" value="搜索" onClick="search();">                  
+  	          </form>
+            </td>
+          </tr>
+        </table></td>
+      </tr>
+    </table></td>
+  </tr>
+</table> -->
+
+  <tr>
+    <td><table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#a8c7ce">
+      <tr>
+        <td width="4%" height="20" bgcolor="d3eaef" class="STYLE10"><div align="center">
+          <input type="checkbox" onclick='Pn.checkbox("ids",this.checked)' />
+        </div></td>
+        <td width="8%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">类型名称</span></div></td>
+        <td width="10%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">基本操作</span></div></td>
+      </tr>
+      <form id="tableForm" method="post">
+        <#list friendlinkctgPage.getList() as x>
+  <tr>
+        <td height="20" bgcolor="#FFFFFF"><div align="center">
+          <input type="checkbox" name="ids" value="${x.id}" />
+        </div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE6"><div align="center"><span class="STYLE19">${x.name!}</span></div></td>
+  
+
+        <td height="20" bgcolor="#FFFFFF"><div align="center" class="STYLE21"><a href="/admin/friendlinkctg/edit/${x.id}">修改</a> | <a href="/admin/friendlinkctg/delete/${x.id}">删除</a></div></td>
+  </tr>
+  </#list>
+  </form>
+    </table></td>
+  </tr>
+  <tr>
+    <td height="30"><#include "/admin/common/_paginate.html" />
+	<@paginate currentPage=friendlinkctgPage.pageNumber totalPage=friendlinkctgPage.totalPage totalRow=friendlinkctgPage.totalRow actionUrl="/admin/friendlinkctg/" /></td>
+  </tr>
+</table>
+</@layout>
+<script type="text/javascript"> 
+
+function search(){
+	$("#searchForm").action="/friendlinkctg";
+	$("#export").val("0");
+	$("#searchForm").submit();
+}
+</script>

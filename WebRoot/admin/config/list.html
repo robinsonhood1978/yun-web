@@ -1,0 +1,56 @@
+<#include "/admin/common/_layout.html"/>
+<@layout>
+<#include "/admin/config/top.html"/>
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td height="30"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td height="24" bgcolor="#353c44"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="6%" height="19" valign="bottom"><div align="center"><img src="/m/images/tb.gif" width="14" height="14" /></div></td>
+                <td width="94%" valign="bottom"><span class="STYLE1"> 参数设定列表</span></td>
+              </tr>
+            </table></td>
+            <td><div align="right"><span class="STYLE1">
+              <input type="checkbox" onclick='Pn.checkbox("ids",this.checked)'/>
+              <font color="#ffffff">全选 </font>     &nbsp;&nbsp;<img src="/m/images/add.gif" width="10" height="10" /> <!--a href="/config/add"><font color="#ffffff">添加</font></a-->   &nbsp; <img src="/m/images/del.gif" width="10" height="10" /> <a href="#" onclick="optDelete('/admin/config/delete');"><font color="#ffffff">删除</font> </a>   <span class="STYLE1"> &nbsp;</span></div></td>
+          </tr>
+        </table></td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td><table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#a8c7ce">
+      <tr>
+        <td width="5%" height="20" bgcolor="d3eaef" class="STYLE10"><div align="center">
+          <input type="checkbox" onclick='Pn.checkbox("ids",this.checked)' />
+        </div></td>
+        <td width="20%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">中文名称</span></div></td>
+        <td width="20%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">英文代码</span></div></td>
+        <td width="10%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">参数值</span></div></td>
+        <td width="15%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">基本操作</span></div></td>
+      </tr>
+      <form id="tableForm" method="post">
+      <#assign lendCheck=["无须审核","需要审核"]/>
+        <#list configPage.getList() as x>
+  <tr>
+        <td height="20" bgcolor="#FFFFFF"><div align="center">
+          <input type="checkbox" name="ids" value="${x.id}" />
+        </div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE6"><div align="center"><span class="STYLE19">${x.name!}</span></div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">${x.code}</div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">${lendCheck[x.value]!}</div></td>
+        <td height="20" bgcolor="#FFFFFF"><div align="center" class="STYLE21"><a href="/admin/config/edit/${x.id}">修改</a> </div></td>
+  </tr>
+  </#list>
+  </form>
+    </table></td>
+  </tr>
+  <tr>
+    <td height="30"><#include "/admin/common/_paginate.html" />
+	<@paginate currentPage=configPage.pageNumber totalPage=configPage.totalPage totalRow=configPage.totalRow actionUrl="/config/" /></td>
+  </tr>
+</table>
+</@layout>

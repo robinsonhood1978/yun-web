@@ -1,0 +1,57 @@
+<#include "/admin/common/_layout.html"/>
+<@layout>
+<#include "/admin/user/top.html"/>
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  
+  <tr>
+    <td><table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#a8c7ce">
+      <tr>
+        <td width="4%" height="20" bgcolor="d3eaef" class="STYLE10"><div align="center">
+          <input type="checkbox" onclick='Pn.checkbox("ids",this.checked)' />
+        </div></td>
+        <td width="10%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">用户名</span></div></td>
+        <td width="10%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">姓名</span></div></td>
+        <td width="10%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">角色</span></div></td>
+        <td width="10%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">手机</span></div></td>
+        <td width="12%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">邮箱</span></div></td>
+        <td width="15%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">开户申请状态</span></div></td>
+        <td width="30%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">基本操作</span></div></td>
+      </tr>
+      <form id="tableForm" method="post">
+        <#list userPage.getList() as x>
+  <tr>
+        <td height="20" bgcolor="#FFFFFF"><div align="center">
+          <input type="checkbox" name="ids" value="${x.id}" />
+        </div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE6"><div align="center"><span class="STYLE19">${x.username!}</span></div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">${x.name!}</div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">${x.role_name!}</div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">${x.mobile!}</div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">${x.email!}</div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">
+        <#if x.kaihu_status==0>
+        	未申请
+        </#if>
+        <#if x.kaihu_status==1>
+        	<font color="red">已申请</font>
+        </#if>
+        <#if x.kaihu_status==2>
+        	<font color="blue">已开户</font>
+        </#if>
+        </div></td>
+        <td height="20" bgcolor="#FFFFFF"><div align="center" class="STYLE21">
+        <a href="/admin/user/view/${x.id}">查看</a> |
+        <a href="/admin/user/edit/${x.id}">修改</a> | 
+        <#if x.kaihu_status==1><a href="/admin/user/kaihu/${x.id}">成功开户</a> | </#if>
+        <a href="/admin/user/delete/${x.id}">删除</a></div></td>
+  </tr>
+  </#list>
+  </form>
+    </table></td>
+  </tr>
+  <tr>
+    <td height="30"><#include "/admin/common/_paginate.html" />
+	<@paginate currentPage=userPage.pageNumber totalPage=userPage.totalPage totalRow=userPage.totalRow actionUrl="/admin/user/" /></td>
+  </tr>
+</table>
+</@layout>

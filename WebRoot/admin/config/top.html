@@ -1,0 +1,55 @@
+<table width="100%" border="0" cellspacing="0" cellpadding="0" style="table-layout:fixed;">
+  <tr>
+    <td height="28" valign="bottom" background="/m/images/right_03.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="1%" height="26" style="width:5px;">&nbsp;</td>
+        <td width="99%" valign="bottom"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+          <td width="102"><table width="100" border="0" align="center" cellpadding="0" cellspacing="0">
+              <tr>
+                <#if ap=='/admin/config/'>
+                <td height="25" class="CUR"><div align="center" onClick="location.href='/admin/config';"> <span class="STYLE3">系统设置</span></div></td>
+                <#else>
+                <td height="25" class="OTHER"><div align="center" onClick="location.href='/admin/config';"> <span class="STYLE1">系统设置</span></div></td>
+              </#if>
+              </tr>
+            </table></td>
+            <td align="right"> &nbsp;<a href="javascript:history.go(-1);"><img src="/m/images/syb.gif" width="62" height="21" /></a><a href="javascript:history.go(1);"> <img src="/m/images/xyb.gif" width="62" height="21" /></a></td>
+          </tr>
+        </table></td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td background="/m/images/right_09.gif" style="line-height:5px;">&nbsp;</td>
+  </tr>
+</table>
+<#if ap=='/admin/config/'>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" style="table-layout:fixed;">
+  <tr>
+    <td height="25" background="/m/images/right_10.gif" style="border-top:solid 1px #b2cdd2; border-bottom:solid 1px #b2cdd2 "><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td height="25"  style="width:5px;">&nbsp;</td>
+        <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+          <td width="25" height="20" >
+          <div align="center">
+          <img src="/m/images/${method!}.gif" width="14" height="14" />
+          </div></td>
+            <td width="135" height="20" align="left" ><span class="STYLE1"><#if method='index'>参数列表</#if><#if method='edit'>编辑参数</#if></span></td>
+            <td width="600" height="20" align="center" >
+<#if resultMsg??>
+  	<span class="STYLE1"><font color="blue">${resultMsg!}</font></span>
+  </#if></td><#if method='index'>
+            <td><div align="right"><span class="STYLE1">
+              <input type="checkbox" onclick='Pn.checkbox("ids",this.checked)'/>
+              全选      &nbsp;&nbsp;<img src="/m/images/del.gif" width="10" height="10" /> 
+               <a href="#" onclick="optDelete('/admin/config/delete');">删除 </a>   <span class="STYLE1"> &nbsp;</span></div></td>
+</#if>
+          </tr>
+        </table></td>
+      </tr>
+    </table></td>
+  </tr>
+</table>
+</#if>

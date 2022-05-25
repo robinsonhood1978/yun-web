@@ -1,0 +1,32 @@
+1. 服务器数据库安装: mariadb 最新版, docker, git
+
+2. tomcat 镜像拉取(jre8,tomcat8)：docker pull dordoka/tomcat
+
+3. 代码准备
+
+	项目代码下载(首次拉取) 
+	git clone https://robinsonhood1978@bitbucket.org/nzcn/cms.git
+	
+
+4. 静态页面发布测试
+	启动容器（挂载静态页面测试，静态页面路径为 /Users/mark/tomcat/cms/WebRoot/f ）：
+	docker run -d --name tomcat -p 8080:8080 -p 8009:8009 -v  /Users/mark/tomcat/cms/WebRoot/f:/opt/tomcat/webapps/ROOT dordoka/tomcat
+	访问:
+	http://localhost:8080/ 能够访问到网站前台静态页面
+	
+5. 数据库连接测试
+	在容器内进行数据库连接测试，其中 172.17.0.1 根据实际情况调整，如果连接正常才可以进行下一步
+	docker exec -it tomcat telnet 172.17.0.1 3306
+	
+
+6. 日常发布，强制更新本地代码为远程最新版
+	git fetch --all && git reset --hard origin/master
+
+7. 创建 .env 文件 内容如下：
+	JDBCURL=jdbc:mysql://localhost/yun_web?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+	DB_USER=root
+	DB_PASS=
+	DEBUG=true 
+
+8. 命令行运行：
+   docker build -t yunweb . && docker run  -p 8080:8080 --env-file .env yunweb

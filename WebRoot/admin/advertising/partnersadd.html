@@ -1,0 +1,17 @@
+<#include "/admin/common/_layout.html" />
+<@layout>
+<#include "/admin/advertising/partnerstop.html" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<div class="box-positon">
+	<div class="rpos">当前位置: 合作伙伴 - 添加</div>
+	<form class="ropt">
+		<input type="submit" value="返回列表" onclick="this.form.action='/admin/advertising/partners';" class="return-button"/>
+	</form>
+	<div class="clear"></div>
+</div>
+<div class="body-box">
+	<form id="myForm" name="myForm" action="/admin/advertising/partnersSave" method="post">
+	<#include "partners_form.html" />
+	</form>
+</div>
+</@layout>

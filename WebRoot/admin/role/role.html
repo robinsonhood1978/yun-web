@@ -1,0 +1,76 @@
+<#include "/admin/common/_layout.html"/>
+<@layout>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" style="table-layout:fixed;">
+  <tr>
+    <td height="28" valign="bottom" background="/m/images/right_03.gif"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="1%" height="26" style="width:5px;">&nbsp;</td>
+        <td width="99%" valign="bottom"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+          <td width="102"><table width="100" border="0" align="center" cellpadding="0" cellspacing="0">
+              <tr>
+                <td height="25" class="CUR"><div align="center" onClick="location.href='/admin/user';"> <span class="STYLE3">用户角色管理</span></div></td>
+              </tr>
+            </table></td>
+            <td align="right"> &nbsp;<a href="javascript:history.go(-1);"><img src="/m/images/syb.gif" width="62" height="21" /></a><a href="javascript:history.go(1);"> <img src="/m/images/xyb.gif" width="62" height="21" /></a></td>
+          </tr>
+        </table></td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td background="/m/images/right_09.gif" style="line-height:5px;">&nbsp;</td>
+  </tr>
+</table>
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td height="30"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td height="24" background="/m/images/right_10.gif" style="border-top:solid 1px #b2cdd2; border-bottom:solid 1px #b2cdd2 "><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="6%" height="19" valign="bottom"><div align="center"> &nbsp;&nbsp;<img src="/m/images/tb.gif" width="14" height="14" /></div></td>
+                <td width="94%" valign="bottom"><span class="STYLE1">  &nbsp;&nbsp;用户角色列表</span></td>
+              </tr>
+            </table></td>
+            <td width="50%"><div align="center"><font color="blue">${resultMsg!}</font></div></td>
+            <td><div align="right"><span class="STYLE1">
+              <input type="checkbox" onclick='Pn.checkbox("ids",this.checked)'/>
+              全选     &nbsp;&nbsp;<img src="/m/images/add.gif" width="10" height="10" /> <a href="/admin/role/add">添加</a>   
+              &nbsp; <img src="/m/images/del.gif" width="10" height="10" /> <a href="#" onclick="optDelete('/admin/role/delete');">删除 </a>   <span class="STYLE1"> &nbsp;</span></div></td>
+          </tr>
+        </table></td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td><table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#a8c7ce">
+      <tr>
+        <td width="4%" height="20" bgcolor="d3eaef" class="STYLE10"><div align="center">
+          <input type="checkbox" onclick='Pn.checkbox("ids",this.checked)' />
+        </div></td>
+        <td width="10%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">角色ID</span></div></td>
+        <td width="15%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">角色名称</span></div></td>
+        <td width="14%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">基本操作</span></div></td>
+      </tr>
+      <form id="tableForm" method="post">
+        <#list rolePage.getList() as x>
+  <tr>
+        <td height="20" bgcolor="#FFFFFF"><div align="center">
+          <input type="checkbox" name="ids" value="${x.id}" />
+        </div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE6"><div align="center"><span class="STYLE19">${x.id}</span></div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">${x.name}</div></td>
+        <td height="20" bgcolor="#FFFFFF"><div align="center" class="STYLE21"><a href="/admin/role/edit/${x.id}">修改</a> | <a href="/admin/role/delete/${x.id}">删除</a></div></td>
+  </tr>
+  </#list>
+  </form>
+    </table></td>
+  </tr>
+  <tr>
+    <td height="30"><#include "/admin/common/_paginate.html" />
+	<@paginate currentPage=rolePage.pageNumber totalPage=rolePage.totalPage totalRow=rolePage.totalRow actionUrl="/admin/role/" /></td>
+  </tr>
+</table>
+</@layout>

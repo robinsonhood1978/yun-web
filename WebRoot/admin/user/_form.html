@@ -1,0 +1,92 @@
+<table width="100%" class="pn-ftable" cellpadding="2" cellspacing="1" border="0">
+<tr><td width="12%" class="pn-flabel pn-flabel-h"><span class="pn-frequired">*</span>昵称:</td><td colspan="1" width="38%" class="pn-fcontent"><input type="text" maxlength="100" name="user.nick" value="${(user.nick)!}" maxlength="100"/>${usernameMsg!}</td>
+<td width="12%" class="pn-flabel pn-flabel-h">电子邮箱:</td>
+<td colspan="1" width="38%" class="pn-fcontent">
+<input type="text" name="user.email" value="${(user.email)!}" class="email" size="30"/></td></tr>
+<tr><td width="12%" class="pn-flabel pn-flabel-h"><span class="pn-frequired">*</span>密码:</td><td colspan="1" width="38%" class="pn-fcontent"><input type="password" autocomplete="off" id="password" maxlength="100" name="user.pwd" class="required" maxlength="100"/>${pwdMsg!}
+</td><td width="12%" class="pn-flabel pn-flabel-h"><span class="pn-frequired">*</span>确认密码:</td>
+<td colspan="1" width="38%" class="pn-fcontent">
+<input name="pwd_confirm" type="password" autocomplete="off" equalTo="#password"/>${pwdConfirmMsg!}
+</td></tr>
+<tr><td width="12%" class="pn-flabel pn-flabel-h"><span class="pn-frequired">*</span>真实姓名:</td>
+<td colspan="1" width="38%" class="pn-fcontent">
+<input type="text" maxlength="100" name="user.name" value="${(user.name)!}" maxlength="100"/>${nameMsg!}</td>
+<td width="12%" class="pn-flabel pn-flabel-h">角色:</td><td colspan="1" width="38%" class="pn-fcontent">
+	<select name="user.role_id" id="role_id">
+		<#list roleList as r>
+			<option value="${r.id!}">${r.name!}</option>
+		</#list>
+	</select>
+</td>
+</tr>
+<tr>
+<td width="12%" class="pn-flabel pn-flabel-h">QQ:</td>
+<td colspan="1" width="38%" class="pn-fcontent">
+<input type="text" maxlength="50" name="user.qq" value="${(user.qq)!}" maxlength="50"/>
+</td>
+<td width="12%" class="pn-flabel pn-flabel-h">手机:</td>
+<td colspan="1" width="38%" class="pn-fcontent">
+<input type="text" maxlength="50" name="user.mobile" value="${(user.mobile)!}" maxlength="50"/>
+</td>
+</tr>
+<tr>
+<td width="12%" class="pn-flabel pn-flabel-h">身份证号:</td>
+<td colspan="1" width="38%" class="pn-fcontent">
+<input type="text" maxlength="50" name="user.uid" value="${(user.uid)!}" maxlength="50"/>
+</td>
+<td width="12%" class="pn-flabel pn-flabel-h">联系地址:</td>
+<td colspan="1" width="38%" class="pn-fcontent">
+<input type="text" size="40" maxlength="50" name="user.address" value="${(user.address)!}" maxlength="50"/>
+</td>
+</tr>
+<tr>
+<td width="12%" class="pn-flabel pn-flabel-h">身份证正面照片:</td>
+<td colspan="3" width="38%" class="pn-fcontent">
+<#if user?? && user.uid_pic??>
+<image src="${(user.uid_pic)!}"/>
+</#if>
+</td>
+</tr>
+<tr>
+<td width="12%" class="pn-flabel pn-flabel-h">紧急联系人:</td>
+<td colspan="1" width="38%" class="pn-fcontent">
+<input type="text" maxlength="50" name="user.linkman" value="${(user.linkman)!}" maxlength="50"/>
+</td>
+<td width="12%" class="pn-flabel pn-flabel-h">紧急联系人手机号:</td>
+<td colspan="1" width="38%" class="pn-fcontent">
+<input type="text" size="40" maxlength="50" name="user.linkman_mobile" value="${(user.linkman_mobile)!}" maxlength="50"/>
+</td>
+</tr>
+<tr>
+<td width="12%" class="pn-flabel pn-flabel-h">银行:</td>
+<td colspan="1" width="38%" class="pn-fcontent">
+<input type="text" maxlength="50" name="user.bank" value="${(user.bank)!}" maxlength="50"/>
+</td>
+<td width="12%" class="pn-flabel pn-flabel-h">银行卡号:</td>
+<td colspan="1" width="38%" class="pn-fcontent">
+<input type="text" size="40" maxlength="50" name="user.card" value="${(user.card)!}" maxlength="50"/>
+</td>
+<tr>
+<td width="12%" class="pn-flabel pn-flabel-h">银行卡正面照片:</td>
+<td colspan="3" width="38%" class="pn-fcontent">
+<#if user?? && user.card_pic??>
+<image src="${(user.card_pic)!}"/>
+</#if>
+</td>
+</tr>
+<tr><td colspan="4" class="pn-fbutton">
+<input type="hidden" name="user.id" value="${(user.id)!}" />
+<input type="hidden" name="user.uid_pic" value="${(user.uid_pic)!}" />
+<input type="hidden" name="user.card_pic" value="${(user.card_pic)!}" />
+<input type="hidden" name="user.id" value="${(user.id)!}" />
+<input type="submit" value="提交" class="submit"/> &nbsp; <input type="reset" value="重置" class="reset"/></td>
+</tr></table>
+<script type="text/javascript"> 
+<#if user?? && user.role_id??>
+var roleId = "${user.role_id!}";
+$("#role_id").val(roleId);
+</#if>
+<#if user?? && (user.store_id)?? >
+$("#store_id").val("${(user.store_id)!}");
+</#if>
+</script>

@@ -1,0 +1,30 @@
+<#if isRoot>
+[{
+	"text": "<a href='/admin/channel/list' target='I2'>根目录</a>",
+	"classes": "folder"
+	<#if list?size gt 0>,
+	"expanded": true,
+	"children": [
+	<#list list as channel>
+		{
+		"id": "${channel.id}",
+		"text": "<a href='/admin/channel/list?root=${channel.id}' target='I2'>${channel.name}</a>",
+		"classes": "<#if channel.child??>folder<#else>file</#if>",
+		"hasChildren": <#if channel.child??>true<#else>false</#if>
+		}<#if channel_has_next>,</#if>
+	</#list>
+	]
+	</#if>
+}]
+<#else>
+	[
+	<#list list as channel>
+		{
+		"id": "${channel.id}",
+		"text": "<a href='/admin/channel/list?root=${channel.id}' target='I2'>${channel.name}</a>",
+		"classes": "<#if channel.child??>folder<#else>file</#if>",
+		"hasChildren": <#if channel.child??>true<#else>false</#if>
+		}<#if channel_has_next>,</#if>
+	</#list>
+	]
+</#if>

@@ -1,0 +1,57 @@
+<table width="100%" class="pn-ftable" cellpadding="2" cellspacing="1" border="0">
+<#if resultMsg??>
+<tr><td colspan="2"><font color="blue">${resultMsg!}</font></td></tr>
+</#if>
+<tr><td width="12%" class="pn-flabel pn-flabel-h"><span class="pn-frequired">*</span>角色名称:</td><td class="pn-fcontent"><input type="text" maxlength="100" name="role.name" value="${(role.name)!}" maxlength="100"/>${nameMsg!}</td>
+</tr>
+<tr><td width="12%" class="pn-flabel pn-flabel-h"><span class="pn-frequired">*</span>角色权限:</td><td class="pn-fcontent">
+<div class="perm-container">
+<div class="perm-layout-1">
+<label><input value="/im/" type="checkbox" name="uri"/>文章</label>
+	<div class="perm-layout-2">
+	<label><input value="/admin/channel/" type="checkbox" name="uri"/>栏目</label>
+	<label><input value="/admin/content/" type="checkbox" name="uri"/>内容</label>	
+	</div>
+</div>
+<div class="perm-layout-1">
+<label><input value="/pm/" type="checkbox" name="uri"/>商品</label>
+	<div class="perm-layout-2">
+	<label><input value="/admin/category/" type="checkbox" name="uri"/>目录</label>	
+	<label><input value="/admin/goods/" type="checkbox" name="uri"/>商品</label>
+	<label><input value="/admin/company/" type="checkbox" name="uri"/>厂商</label>	
+	</div>
+</div>
+<div class="perm-layout-1">
+<label><input value="/um/" type="checkbox" name="uri"/>系统</label>
+	<div class="perm-layout-2">
+	<label><input value="/admin/user/" type="checkbox" name="uri"/>用户</label>
+	<label><input value="/admin/role/" type="checkbox" name="uri"/>角色</label>	
+	<label><input value="/admin/config/" type="checkbox" name="uri"/>设置</label>	
+	</div>
+</div>
+</div>
+</td></tr>
+<tr><td colspan="4" class="pn-fbutton">
+<script type="text/javascript"> 
+$(function() {
+	$(".perm-container input[type=checkbox]").bind("click",function() {
+		parentCheck(this);
+		childCheck(this);
+	});
+});
+function parentCheck(chk) {
+	var obj = $(chk).parent().parent().parent();
+	while(obj && obj.attr("class").indexOf("perm-container")==-1) {
+		if(chk.checked) {
+			$(obj.children()[0]).children().attr("checked",true);
+		}
+		obj = obj.parent();
+	}
+}
+function childCheck(chk) {
+	$(chk).parent().next().children().find("input[type=checkbox]").each(function(){this.checked=chk.checked});
+}
+</script>
+<input type="hidden" name="role.id" value="${(role.id)!}" />
+<input type="submit" value="提交" class="submit"/> &nbsp; <input type="reset" value="重置" class="reset"/>
+</td></tr></table>

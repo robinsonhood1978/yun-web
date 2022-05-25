@@ -1,0 +1,25 @@
+<#include "/admin/common/_layout.html" />
+<@layout>
+<div class="body-box">
+	<form id="myForm" action="/admin/user/pwd" method="post">
+		<table width="100%" class="pn-ftable" cellpadding="2" cellspacing="1" border="0">
+<#if resultMsg??>
+<tr><td class="pn-fcontent" align="center" colspan="4"><font color="blue">${resultMsg!}</font></td></tr>
+</#if>
+<tr><td width="12%" class="pn-flabel pn-flabel-h"><span class="pn-frequired">*</span>用户名:</td><td colspan="1" width="38%" class="pn-fcontent">${(user.username)!}</td>
+<td width="12%" class="pn-flabel pn-flabel-h">原密码:</td><td colspan="1" width="38%" class="pn-fcontent"><input type="text" name="origin_pwd" value="" size="30"/></td></tr>
+<tr><td width="12%" class="pn-flabel pn-flabel-h"><span class="pn-frequired">*</span>密码:</td><td colspan="1" width="38%" class="pn-fcontent"><input type="password" autocomplete="off" id="pwd1" maxlength="100" name="user.pwd" class="required" maxlength="100"/>${pwdMsg!}
+</td><td width="12%" class="pn-flabel pn-flabel-h"><span class="pn-frequired">*</span>确认密码:</td><td colspan="1" width="38%" class="pn-fcontent"><input name="pwd_confirm" type="password" autocomplete="off" id="pwd2"/>${pwdConfirmMsg!}
+</td></tr>
+<tr><td width="12%" class="pn-flabel pn-flabel-h">电话:</td><td colspan="1" width="38%" class="pn-fcontent"><input type="text" maxlength="50" name="user.phone" value="${(user.phone)!}" maxlength="50"/></td>
+<td width="12%" class="pn-flabel pn-flabel-h">手机:</td><td colspan="1" width="38%" class="pn-fcontent"><input type="text" maxlength="50" name="user.mobile" value="${(user.mobile)!}" maxlength="50"/></td></tr>
+<tr><td width="12%" class="pn-flabel pn-flabel-h">电子邮箱:</td><td colspan="3" width="38%" class="pn-fcontent"><input type="text" name="user.email" value="${(user.email)!}" class="email" size="30"/></td></tr>
+<tr>
+        <td colspan="4" class="pn-fbutton"><input type="hidden" name="user.id" value="${(user.id)!}" />
+        <input type="submit" value="提交" class="submit"/> &nbsp; <input type="reset" value="重置" class="reset"/></td>
+      </tr>
+</table>
+	</form>
+</div>
+
+</@layout>

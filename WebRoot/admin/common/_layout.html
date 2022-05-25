@@ -1,0 +1,270 @@
+<#macro layout>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link rel="stylesheet" type="text/css" href="/m/css/admin.css"/>
+<script type="text/javascript" src="/m/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="/m/js/js.js"></script>
+<script type="text/javascript" src="/m/js/pony.js"></script>
+<script type="text/javascript" src="/m/js/easy_validator.pack.js"></script>
+<script type="text/javascript" src="/m/js/jquery.bgiframe.min.js"></script>
+<link href="/m/css/validate.css" rel="stylesheet" type="text/css" />
+<script src="/m/date/WdatePicker.js" type="text/javascript"></script>
+<link rel="stylesheet" href="/m/css/lightbox.css" type="text/css" media="screen" />
+<script src="/m/js/jquery.chained.js" type="text/javascript" charset="utf-8"></script>
+
+<link rel="stylesheet" type="text/css" href="/m/css/easyui.css">
+<link rel="stylesheet" type="text/css" href="/m/css/icon.css">
+<script type="text/javascript" src="/m/js/jquery.easyui.min.js"></script>
+
+<script type="text/javascript"> 
+function getTableForm() {
+	return document.getElementById('tableForm');
+}
+function optDelete(actionUrl) {
+	if(Pn.checkedCount('ids')<=0) {
+		alert("请选择您要操作的数据");
+		return;
+	}
+	if(!confirm("您确定删除吗？")) {
+		return;
+	}
+	var f = getTableForm();
+	f.action=actionUrl;
+	f.submit();
+}
+$.format = function(source, params) {
+		if (arguments.length == 1)
+			return function() {
+				var args = $.makeArray(arguments);
+				args.unshift(source);
+				return $.format.apply(this, args);
+			};
+		if (arguments.length > 2 && params.constructor != Array) {
+			params = $.makeArray(arguments).slice(1);
+		}
+		if (params.constructor != Array) {
+			params = [ params ];
+		}
+		$.each(params, function(i, n) {
+			source = source.replace(new RegExp("\\{" + i + "\\}", "g"), n);
+		});
+		return source;
+	};
+$.extend($.fn.datagrid.defaults.editors, {
+    datetimebox : {
+        init : function(container, options) {
+            var input = $('<input class="Wdate" onclick="WdatePicker({dateFmt:\'yyyy-MM-dd\',readOnly:true});"  />').appendTo(container);
+            return input;
+        },
+        getValue : function(target) {
+            return $(target).val();
+        },
+        setValue : function(target, value) {
+            $(target).val(value);
+        },
+        resize : function(target, width) {
+            var input = $(target);
+            if ($.boxModel == true) {
+                input.width(width - (input.outerWidth() - input.width()));
+            } else {
+                input.width(width);
+            }
+        }
+    }
+});
+$.extend($.fn.combobox.methods, {
+    selectedIndex: function (jq, index) {
+        if (!index)
+            index = 0;
+        var data = $(jq).combobox('options').data;
+        var vf = $(jq).combobox('options').valueField;
+        $(jq).combobox('setValue', eval('data[index].' + vf));
+    }
+});
+</script>
+<style type="text/css">
+<!--
+body {
+	margin-left: 3px;
+	margin-top: 0px;
+	margin-right: 3px;
+	margin-bottom: 0px;
+}
+
+.STYLE6 {color: #000000; font-size: 12; }
+.STYLE10 {color: #000000; font-size: 12px; }
+.STYLE19 {
+	color: #344b50;
+	font-size: 12px;
+}
+.STYLE21 {
+	font-size: 12px;
+	color: #3b6375;
+}
+.STYLE22 {
+	font-size: 12px;
+	color: #295568;
+}
+.STYLE31 {
+	font-size: 13px;
+}
+.STYLE3 {font-size: 12px; color: #FFFFFF; font-weight: bold;}
+.CUR{
+	background:url(/m/images/right_061.gif); 
+	border-left:solid 1px #10637b;
+	border-top:solid 1px #10637b;
+	border-right:solid 1px #10637b;
+}
+.OTHER{
+	background:url(/m/images/right_06.gif); 
+	border-left:solid 1px #82bcbd;
+	border-top:solid 1px #82bcbd;
+	border-right:solid 1px #82bcbd; 
+	cursor:hand
+}
+-->
+</style>
+<style type="text/css"> 
+.perm-container{}
+.perm-layout-1{padding:3px 0;}
+.perm-layout-2{padding-left:30px;}
+</style>
+<style type="text/css">
+<!--
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+
+img {
+	border: 0;
+}
+
+.STYLE1 {
+	font-size: 13px;
+}
+
+.STYLE6 {
+	color: #000000;
+	font-size: 12px;
+}
+
+.STYLE10 {
+	color: #000000;
+	font-size: 12px;
+}
+
+.STYLE19 {
+	color: #344b50;
+	font-size: 12px;
+}
+
+.STYLE21 {
+	font-size: 12px;
+	color: #3b6375;
+}
+
+.STYLE22 {
+	font-size: 12px;
+	color: #295568;
+}
+
+.STYLE3 {
+	font-size: 12px;
+	color: #FFFFFF;
+	font-weight: bold;
+}
+
+.STYLE4 {
+	color: #03515d;
+	font-size: 12px;
+}
+
+.CUR {
+	background: url(/m/images/right_061.gif);
+	border-left: solid 1px #10637b;
+	border-top: solid 1px #10637b;
+	border-right: solid 1px #10637b;
+}
+
+.OTHER {
+	background: url(/m/images/right_06.gif);
+	border-left: solid 1px #82bcbd;
+	border-top: solid 1px #82bcbd;
+	border-right: solid 1px #82bcbd;
+	cursor: hand
+}
+-->
+</style>
+		<style type="text/css">
+.perm-container {
+	
+}
+
+.perm-layout-1 {
+	padding: 3px 0;
+}
+
+.perm-layout-2 {
+	padding-left: 30px;
+}
+</style>
+</head>
+
+<body>
+<#nested>
+<!--jquery右下角pop弹窗start -->
+<script type="text/javascript" src="/m/js/yanue.pop.js"></script>
+<script type="text/javascript" >
+	function needAlert(){
+	 $.post("/alert/need", {
+		}, function(data) {
+			if(data.count>0){
+				 var pop=new Pop(data.name,data.url,data.content);
+			}
+		}, "json");
+	}
+	  //使用参数：1.标题，2.链接地址，3.内容简介
+	  window.onload=function(){
+	  		//needAlert();
+		}
+		
+</script>
+
+<div id="pop" style="display:none;">
+	<style type="text/css">
+	*{margin:0;padding:0;}
+	#pop{background:#fff;width:260px;border:1px solid #e0e0e0;font-size:12px;position: fixed;right:10px;bottom:10px;}
+	#popHead{line-height:32px;background:#99CCFF;border-bottom:1px solid #e0e0e0;position:relative;font-size:12px;padding:0 0 0 10px;}
+	#popHead h2{font-size:14px;color:#666;line-height:32px;height:32px;}
+	#popHead #popClose{position:absolute;right:10px;top:1px;}
+	#popHead a#popClose:hover{color:#f00;cursor:pointer;}
+	#popContent{padding:5px 10px;}
+	#popTitle a{line-height:24px;font-size:14px;font-family:'微软雅黑';color:#333;font-weight:bold;text-decoration:none;}
+	#popTitle a:hover{color:#f60;}
+	#popIntro{text-indent:24px;line-height:160%;margin:5px 0;color:#666;}
+	#popMore{text-align:right;border-top:1px dotted #ccc;line-height:24px;margin:8px 0 0 0;}
+	#popMore a{color:#f60;}
+	#popMore a:hover{color:#f00;}
+	</style>
+	<div id="popHead">
+	<a id="popClose" title="关闭">关闭</a>
+	<h2>温馨提示</h2>
+	</div>
+	<div id="popContent">
+	<dl>
+		<dt id="popTitle"><a href="" target="rightFrame"></a></dt>
+		<dd id="popIntro"></dd>
+	</dl>
+	<p id="popMore"><a href="" target="rightFrame">查看 »</a></p>
+	</div>
+</div>
+<!--右下角pop弹窗 end-->
+</body>
+</html>
+</#macro>

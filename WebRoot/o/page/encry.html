@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+  <head>
+    <title>JavaScript RSA Encryption</title>
+    <script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+    <script src="../js/jsencrypt.min.js"></script>
+    <script type="text/javascript">
+
+      // Call this code when the page is done loading.
+      $(function() {
+		$publicKey = 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCDmfMCN1+3TXLbnW03ga8hTcFYbdaJM/TUhMwZ4ykrzTGRKjGDsiArfpV6p5pQcaeCusmK6fm2VdtKe54D/yUmIsQrNo3P4OYVNWuAmr5paZbutN4KxDtLHpcfFQCfzT1NaAdxVO6Gx0DAV/eTj90nYTeyh+CTNxyQqBynoY56+wIDAQAB';
+        // Run a quick encryption/decryption when they click.
+        $('#testme').click(function() {
+
+          // Encrypt with the public key...
+          var encrypt = new JSEncrypt();
+          encrypt.setPublicKey($publicKey);
+          var encrypted = encrypt.encrypt('robin');
+          
+          console.log(encrypted);
+
+          // Decrypt with the private key...
+          /*var decrypt = new JSEncrypt();
+          decrypt.setPrivateKey($('#privkey').val());
+          var uncrypted = decrypt.decrypt(encrypted);
+
+          // Now a simple check to see if the round-trip worked.
+          if (uncrypted == $('#input').val()) {
+            alert(encrypted);
+          }
+          else {
+            alert('Something went wrong....');
+          }*/
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <label for="privkey">Private Key</label><br/>
+    <textarea id="privkey" rows="15" cols="65">MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAIOZ8wI3X7dNctudbTeBryFNwVht1okz9NSEzBnjKSvNMZEqMYOyICt+lXqnmlBxp4K6yYrp+bZV20p7ngP/JSYixCs2jc/g5hU1a4Cavmlplu603grEO0selx8VAJ/NPU1oB3FU7obHQMBX95OP3SdhN7KH4JM3HJCoHKehjnr7AgMBAAECgYBm+onI+zHACy/MoGS9YZJ8Og8ItnKBTJHR1tSrkTE/YELgOCckybcYseYgY5SCTF1rE+Tv+eT4hDikERV2RSp4jMrsCXuxH8Mbu1BfP6JQB1iUWz2r9QV4cw7tzC5lCcaoBUBk49cxS/lgvc+QPpsOvSPXXxJLkGJbgzDmafaJMQJBALhg5neuDxIswtJFfchoWFoo3a//4QYYwvLEuJb3/085uFg+WiavhHsDw9w+wIHEz4b3dIQrDrZOiDhGDMxkmmMCQQC2uL7uNWqPYB0tK6ObH3Y7o+aUJoE6OLqEVN1ViIxnaYNXQfBeDZ+Ttse+KvBtNZqg2JpKU4St8SlZzAYhIXSJAkEAiIVHYOqCwkReZO+LeS657NhBfaYLakY/Yx6CR1aNto3Yj45rliV0BNn+1j+oru2ZdCgaIBr5o8d2WaSUqWr8XQJAOGwR4SKzdfR67fDUw1jSvJXe5I6DRwQvbB98fSX+HQyy1uXwoEpapVVClpFRzpdH2TUpZ5wkk0WtvCHJHr/i6QJADlR/9pRb2NDR/psU9Ss+8PfLZvrfulIvjHnRfIMqMNDISBg0d7D+cGh8r1zUn5vMDHDAGM9bSa+irRjiun9hxQ==</textarea><br/>
+    <label for="pubkey">Public Key</label><br/>
+    <textarea id="pubkey" rows="15" cols="65">MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCDmfMCN1+3TXLbnW03ga8hTcFYbdaJM/TUhMwZ4ykrzTGRKjGDsiArfpV6p5pQcaeCusmK6fm2VdtKe54D/yUmIsQrNo3P4OYVNWuAmr5paZbutN4KxDtLHpcfFQCfzT1NaAdxVO6Gx0DAV/eTj90nYTeyh+CTNxyQqBynoY56+wIDAQAB</textarea><br/>
+    <label for="input">Text to encrypt:</label><br/>
+    <textarea id="input" name="input" type="text" rows=4 cols=70>robin</textarea><br/>
+    <input id="testme" type="button" value="Test Me!!!" /><br/>
+  </body>
+</html>

@@ -1,0 +1,246 @@
+<div class="layuimini-container layuimini-page-anim">
+    <div class="layuimini-main">
+
+        <fieldset class="table-search-fieldset">
+            <legend>搜索信息</legend>
+            <div style="margin: 10px 10px 10px 10px">
+                <form class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">咨询日期</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="create_date" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">咨询者Email</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="email" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">运输方式</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="freight_type" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">货物重量</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="weight" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">出发地</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="departure" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">目的地</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="destination" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
+
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除 </button>
+            </div>
+        </script>
+
+        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+
+        <script type="text/html" id="currentTableBar">
+			<a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="view">查看</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+        </script>
+
+    </div>
+</div>
+
+<script>
+
+var json = {};
+    layui.use(['form', 'table','miniPage','element'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table,
+            miniPage = layui.miniPage;
+		
+        
+        
+        table.render({
+            elem: '#currentTableId',
+            //url: 'api/vistor_info.json',
+            url: '/api/quote_list',
+            toolbar: '#toolbarDemo',
+            defaultToolbar: ['filter', 'exports', 'print', {
+                title: '提示',
+                layEvent: 'LAYTABLE_TIPS',
+                icon: 'layui-icon-tips'
+            }],
+            cols: [[
+                {type: "checkbox", width: 50},
+                {field: 'id', width: '5%', title: 'ID', sort: true},
+                {field: 'email', width: '15%', title: 'Email', sort: true},
+                {field: 'freight_type', width: '8%', title: '运输方式'},
+                {field: 'weight', width: '7%', title: '重量'},
+                {field: 'departure', title: '出发地', minWidth: 100},
+                {field: 'destination', title: '目的地', minWidth: 100},
+                {field: 'viewed', width: '7%', title: '阅读状态',
+                	templet: function (res) {
+                		//alert(res.viewed)
+                        let quoteId = res.id;
+                        if (res.viewed == 0) {
+                        	return "   <input type='checkbox'  quoteId = '" + quoteId + "' lay-filter='viewed' lay-skin='switch' lay-text='已读|未读'>"
+                            
+                        } else if (res.viewed == 1) {
+                        	return "   <input type='checkbox'  quoteId = '" + quoteId + "' lay-filter='viewed' lay-skin='switch' lay-text='已读|未读' checked>"
+                        }
+                    }
+                },
+                {field: 'replied', width: '7%', title: '回复状态',
+                	templet: function (res) {
+                        let quoteId = res.id;
+                        if (res.replied == 0) {
+                        	return "   <input type='checkbox'  quoteId = '" + quoteId + "' lay-filter='replied' lay-skin='switch' lay-text='已回复|未回复'>"
+                            
+                        } else if (res.replied == 1) {
+                        	return "   <input type='checkbox'  quoteId = '" + quoteId + "' lay-filter='replied' lay-skin='switch' lay-text='已回复|未回复' checked>"
+                        }
+                    }
+                },
+                {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
+            ]],
+            limits: [2, 10, 15, 20, 25, 50, 100],
+            limit: 10,
+            page: true,
+            skin: 'line'
+        });
+        
+        form.on('switch(viewed)', function (data) {
+            let quoteId = data.elem.attributes['quoteId'].nodeValue;
+            let checked = data.elem.checked;
+            let status;
+            if(checked){
+            	status = 1;
+            }
+            else{
+            	status = 0;
+            }
+           	$.get('/api/quote_status?status='+status+'&id='+quoteId, function (data) {
+               	console.log("stauts updated");
+            });
+        });
+        form.on('switch(replied)', function (data) {
+            let quoteId = data.elem.attributes['quoteId'].nodeValue;
+            let checked = data.elem.checked;
+            let status;
+            if(checked){
+            	status = 1;
+            }
+            else{
+            	status = 0;
+            }
+           	$.get('/api/quote_reply?status='+status+'&id='+quoteId, function (data) {
+               	console.log("stauts updated");
+            });
+        });
+
+        // 监听搜索操作
+        form.on('submit(data-search-btn)', function (data) {
+            var result = JSON.stringify(data.field);
+            layer.alert(result, {
+                title: '最终的搜索信息'
+            });
+
+            //执行搜索重载
+            table.reload('currentTableId', {
+                page: {
+                    curr: 1
+                }
+                , where: {
+                    searchParams: result
+                }
+            }, 'data');
+
+            return false;
+        });
+
+        /**
+         * toolbar事件监听
+         */
+        table.on('toolbar(currentTableFilter)', function (obj) {
+            if (obj.event === 'add') {   // 监听添加操作
+                var content = miniPage.getHrefContent('page/table/add.html');
+                var openWH = miniPage.getOpenWidthHeight();
+
+                var index = layer.open({
+                    title: '添加用户',
+                    type: 1,
+                    shade: 0.2,
+                    maxmin:true,
+                    shadeClose: true,
+                    area: [openWH[0] + 'px', openWH[1] + 'px'],
+                    offset: [openWH[2] + 'px', openWH[3] + 'px'],
+                    content: content,
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+            } else if (obj.event === 'delete') {  // 监听删除操作
+                var checkStatus = table.checkStatus('currentTableId')
+                    , data = checkStatus.data;
+                layer.alert(JSON.stringify(data));
+            }
+        });
+
+        //监听表格复选框选择
+        table.on('checkbox(currentTableFilter)', function (obj) {
+            console.log(obj)
+        });
+
+        table.on('tool(currentTableFilter)', function (obj) {
+            var data = obj.data;
+            
+            if (obj.event === 'view') {
+            	//alert(JSON.stringify(data));
+            	json = data;
+                var content = miniPage.getHrefContent('page/table/quote_view.html');
+                var openWH = miniPage.getOpenWidthHeight();
+
+                var index = layer.open({
+                    title: '报价咨询详情',
+                    type: 1,
+                    shade: 0.2,
+                    maxmin:true,
+                    shadeClose: true,
+                    area: [openWH[0] + 'px', openWH[1] + 'px'],
+                    offset: [openWH[2] + 'px', openWH[3] + 'px'],
+                    content: content,
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+                return false;
+            } else if (obj.event === 'delete') {
+                layer.confirm('真的删除么', function (index) {
+                    obj.del();
+                    $.get('/api/quote_del?&id='+data.id, function (data) {
+                       	console.log("deleted");
+                    });
+                    layer.close(index);
+                });
+            }
+        });
+
+    });
+</script>

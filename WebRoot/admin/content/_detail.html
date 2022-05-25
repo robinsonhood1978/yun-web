@@ -1,0 +1,60 @@
+<script type="text/javascript">
+//点击首页浏览的时候
+function fun_toUpdate(){
+	document.myForm.action="/admin/content/edit?id="+$('#contentId').val();
+	document.myForm.submit();
+	
+}
+//点击审核通过与退回的时候
+function fun_updateStatus(status){
+	document.myForm.action="/admin/content/examine?status="+status;
+	document.myForm.submit();
+}
+</script>
+
+<table id="prototype" width="100%" class="pn-ftable" cellpadding="2" cellspacing="1" border="0">
+<#if content??>
+<tr>
+	<td class="pn-fcontent" align="left">
+		<input type="button" value="通过审核" onclick="fun_updateStatus(2);" style="width: 100px;height: 30px;"/>
+		<input type="button" value="审核失败" onclick="fun_updateStatus(3);" style="width: 100px;height: 30px;"/>
+		<input type="button" value="修改" onclick="fun_toUpdate();" style="width: 100px;height: 30px;"/>
+		<input type="button" onclick="$('#viewInFront').submit();" value="首页浏览" style="width: 100px;height: 30px;"/>
+	</td>
+</tr>
+<tr>
+	<td class="pn-fcontent" align="center">
+		<b><font size="+1">${content.title!}</font></b>
+		<input type="hidden" id="contentId" name="contentId" value="${content.id!}"/>
+		<input type="hidden" name="root" value="${root!}"/>
+		<input type="hidden" name="title" value="${title!}"/>
+		<input type="hidden" name="creator" value="${creator!}"/>
+		<input type="hidden" name="is_recommend" value="${is_recommend!}"/>
+		<input type="hidden" name="type_id" value="${type_id!}"/>
+		<input type="hidden" name="status" value="${status!}"/>
+		<input type="hidden" name="startTime" value="${startDateStr!}"/>
+		<input type="hidden" name="endTime" value="${endDateStr!}"/>
+		<input type="hidden" name="orderBy" value="${orderBy!}"/>
+		<input type="hidden" name="keyword" value="${keyword!}"/>
+		<input type="hidden" name="pageNum" value="${pageNum!}"/>
+	</td>
+</tr>
+<tr>
+	<td class="pn-fcontent" align="center">
+		发布者: ${content.creator.name}&nbsp;&nbsp;&nbsp;&nbsp;
+		来源: ${content.origin!}&nbsp;&nbsp;&nbsp;&nbsp;
+		发布时间: ${content.release_date?string('yyyy-MM-dd hh:mm:ss')} 
+	</td>
+</tr>
+<tr>
+	<td class="pn-fcontent" align="center">
+		<br/>
+	</td>
+</tr>
+<tr>
+	<td class="pn-fcontent">
+		${content.txt!}
+	</td>
+</tr>
+</#if>
+</table>

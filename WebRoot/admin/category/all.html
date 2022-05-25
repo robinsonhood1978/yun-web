@@ -1,0 +1,53 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<style type="text/css">
+<!--
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+-->
+</style>
+<style> 
+.navPoint { 
+COLOR: white; CURSOR: hand; FONT-FAMILY: Webdings; FONT-SIZE: 9pt 
+} 
+</style> 
+<script>
+function switchSysBar(){ 
+//var locate=location.href.replace('/mid','');
+//var ssrc=document.all("img1").src.replace(locate,'');
+var ssrc=document.all("img1").src;
+//alert(ssrc);
+if (ssrc.indexOf("/m/images/main_30.gif")>-1)
+{ 
+document.all("img1").src="/m/images/main_30_1.gif";
+document.all("frmTitle").style.display="none" ;
+} 
+else
+{ 
+document.all("img1").src="/m/images/main_30.gif";
+document.all("frmTitle").style.display="" ;
+} 
+} 
+</script>
+
+</head>
+
+<body style="overflow:hidden">
+<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="227" id=frmTitle noWrap name="fmTitle" align="center" valign="top">
+	<iframe name="I1" height="100%" width="227" src="/admin/category/left" border="0" frameborder="0" scrolling="yes">
+	浏览器不支持嵌入式框架，或被配置为不显示嵌入式框架。</iframe>	</td>
+    <td width="4" valign="middle" background="/m/images/main_27.gif" onClick="javascript:switchSysBar();"><SPAN class=navPoint 
+id=switchPoint title="关闭/打开左栏"><img src="/m/images/main_30.gif" name="img1" width=4 height=47 id=img1></SPAN></td>
+    <td align="center" valign="top"><iframe name="I2" height="100%" width="100%" border="0" frameborder="0" src="/admin/category/"> 浏览器不支持嵌入式框架，或被配置为不显示嵌入式框架。</iframe></td>
+  </tr>
+</table>
+</body>
+</html>

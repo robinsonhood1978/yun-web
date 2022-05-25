@@ -1,0 +1,30 @@
+<#if isRoot>
+[{
+	"text": "<a href='/admin/category' target='I2'>根目录</a>",
+	"classes": "folder"
+	<#if list?size gt 0>,
+	"expanded": true,
+	"children": [
+	<#list list as category>
+		{
+		"id": "${category.id}",
+		"text": "<a href='/admin/category/${category.id}' target='I2'>${category.name}</a>",
+		"classes": "<#if category.child??>folder<#else>file</#if>",
+		"hasChildren": <#if category.child??>true<#else>false</#if>
+		}<#if category_has_next>,</#if>
+	</#list>
+	]
+	</#if>
+}]
+<#else>
+	[
+	<#list list as category>
+		{
+		"id": "${category.id}",
+		"text": "<a href='/admin/category/${category.id}' target='I2'>${category.name}</a>",
+		"classes": "<#if category.child??>folder<#else>file</#if>",
+		"hasChildren": <#if category.child??>true<#else>false</#if>
+		}<#if category_has_next>,</#if>
+	</#list>
+	]
+</#if>

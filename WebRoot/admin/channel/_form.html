@@ -1,0 +1,287 @@
+<table width="100%" class="pn-ftable" cellpadding="2" cellspacing="1"
+	border="0">
+	<#if resultMsg??>
+	<tr>
+		<td colspan="2">
+			<font color="blue">${resultMsg!}</font>
+		</td>
+	</tr>
+	</#if>
+	<tr>
+		<td width="12%" class="pn-flabel pn-flabel-h">
+			<span class="pn-frequired">*</span>栏目名称:
+		</td>
+		<td class="pn-fcontent">
+			<input type="text" maxlength="100" name="channel.name"
+				value="${(channel.name)!}" maxlength="100" />
+			${nameMsg!}
+		</td>
+	</tr>
+	<tr>
+		<td width="12%" class="pn-flabel pn-flabel-h">
+			<span class="pn-frequired">*</span>访问路径:
+		</td>
+		<td class="pn-fcontent">
+			<input type="text" maxlength="100" name="channel.path"
+				value="${(channel.path)!}" maxlength="100" />
+			${pathMsg!}
+		</td>
+	</tr>
+	<tr>
+		<td width="12%" class="pn-flabel pn-flabel-h">
+			<span class="pn-frequired">*</span>上级栏目:
+		</td>
+		<td class="pn-fcontent">
+			<#if parentName??> ${parentName!}
+			<input type="hidden" name="channel.parent_id"
+				value="${(channel.parent_id)!}" />
+			<#else>
+			<select name="channel.parent_id" id="parent_id" WIDTH="200"
+				STYLE="width: 200px">
+				<option value="0">
+					顶级栏目
+				</option>
+				<#if channelList?? && channelList?size gt 0> <#assign
+				origdepth=channelList[0].depth+1/> <#list channelList as c>
+				<option value="${c.id}">
+					<#if c.depth gte origdepth><#list origdepth..c.depth as
+					i>&nbsp;&nbsp;</#list>></#if>${c.name}
+				</option>
+				</#list> </#if>
+			</select>
+			</#if>
+		</td>
+	</tr>
+	<tr>
+		<td width="12%" class="pn-flabel pn-flabel-h">
+			顺序号:
+		</td>
+		<td class="pn-fcontent">
+			<input type="text" maxlength="100" name="channel.priority"
+				value="${(channel.priority)!}" maxlength="100" />
+		</td>
+	</tr>	
+		<tr>
+			<td width="12%" class="pn-flabel pn-flabel-h">
+				是否显示:
+			</td>
+			<td class="pn-fcontent">
+				<input type="radio" name="channel.is_display" id="channel.is_display" value="true"/>是
+				&nbsp;
+				<input type="radio" name="channel.is_display" id="channel.display" value="false"/>否
+			</td>
+		</tr>
+		<tr>
+		    <td width="12%" class="pn-flabel pn-flabel-h">
+				是否推荐:
+			</td>	 
+			<td class="pn-fcontent">
+			    <input type="radio" name="channel.is_recommend" id="channel.is_recommend" value="true"/>是
+				&nbsp;
+				<input type="radio" name="channel.is_recommend" id="channel.recommend" value="false"/>否
+			</td>
+		</tr>
+			<tr>
+				<td width="12%" class="pn-flabel pn-flabel-h">
+					栏目页模板:
+				</td>
+				<td class="pn-fcontent"> 
+					<select name="channel.tpl_channel" id="tpl_channel" WIDTH="200"
+						STYLE="width: 200px">
+						<option value="0">
+							--默认--
+						</option>
+						<#if channelModelList?? && channelModelList?size gt 0><#list channelModelList as c>
+						<option value="${c.path}" >
+							${c.name}
+						</option>
+						</#list> </#if>
+					</select>
+				</td>
+			</tr>	
+				<tr>
+					<td width="12%" class="pn-flabel pn-flabel-h">
+						内容页模板:
+					</td>
+					<td class="pn-fcontent">
+						<select name="channel.tpl_content" id="tpl_content" WIDTH="200"
+						STYLE="width: 200px">
+						<option value="0">
+							--默认--
+						</option>
+						<#if contentModelList?? && contentModelList?size gt 0><#list contentModelList as c>
+						<option value="${c.path}">
+							${c.name}
+						</option>
+						</#list> </#if>
+					</select>	
+					</td>
+				</tr>	
+	<tr id="tr-media">
+        <td class="pn-flabel pn-flabel-h"><div>
+          	缩略图:
+        </div></td>
+        <td colspan="3" class="pn-fcontent">
+          <table border="0">
+          	<tr>
+          		<td class="pn-fcontent">
+          			<div>
+						<input type="text" id="path_title_imgFile" name="channel.title_img" style="width:200px" value="${(channel.title_img)!}"/>
+					</div>
+				</td>
+        		<td class="pn-fcontent">
+        			<span id="mfc_mediaFileText1" style="margin-top:7px;position:relative;display:block;width:300px;*width:300px;">
+					<input type='text' id='mediaFileText1'/>  
+					<input class="browse" type='button' value='浏览'/>
+					<input onchange="$('#mediaFileText1').val(this.value)" size="19" type="file" name="title_imgFile" id="title_imgFile" style="height:24px;opacity:0;filter:alpha(opacity=0);position:absolute;right:79px;top:2px;"/>
+					<input type="button" value="上传" onclick="uploadImg('title_imgFile','mediaFileText1');" class="upload-button"/>
+					</span> 
+					<input type="hidden" id="prototype_title_imgFile" name="prototype_title_imgFile"/>
+				</td>
+				<td align="center">
+					<#if channel??>
+					<a class="lightbox" rel="bigimg" id="hrefImg_title_imgFile" href="${(channel.title_img)!}">
+						<img id="preImg_title_imgFile" src="${(channel.title_img)!}" alt="预览" style="width:100px;height:70px;background-color:#ccc;border:1px solid #333"/>
+					</a>
+					</#if>
+				</td>
+			</tr>
+		  </table>
+        </td>
+    </tr>
+<tr id="tr-media-content">
+        <td class="pn-flabel pn-flabel-h"><div>
+          	内容图:
+        </div></td>
+        <td colspan="3" class="pn-fcontent">
+          <table border="0">
+          	<tr>
+          		<td class="pn-fcontent">
+          			<div>
+						<input type="text" id="path_content_imgFile" name="channel.content_img" style="width:200px" value="${(channel.content_img)!}"/>
+					</div>
+				</td>
+        		<td class="pn-fcontent">
+        			<span id="mfc_mediaFileText2" style="margin-top:7px;position:relative;display:block;width:300px;*width:300px;">
+					<input type='text' id='mediaFileText2'/>  
+					<input class="browse" type='button' value='浏览'/>
+					<input onchange="$('#mediaFileText2').val(this.value)" size="19" type="file" name="content_imgFile" id="content_imgFile" style="height:24px;opacity:0;filter:alpha(opacity=0);position:absolute;right:79px;top:2px;"/>
+					<input type="button" value="上传" onclick="uploadImg('content_imgFile','mediaFileText2');" class="upload-button"/>
+					</span> 
+					<input type="hidden" id="prototype_content_imgFile" name="prototype_content_imgFile"/>
+				</td>
+				<td align="center">
+					<#if channel??>
+					<a class="lightbox" rel="bigimg" id="hrefImg_content_imgFile" href="${(channel.content_img)!}">
+						<img id="preImg_content_imgFile" src="${(channel.content_img)!}" alt="预览" style="width:100px;height:70px;background-color:#ccc;border:1px solid #333"/>
+					</a>
+					</#if>
+				</td>
+			</tr>
+		  </table>
+        </td>
+</tr>
+							<tr>
+								<td width="12%" class="pn-flabel pn-flabel-h">
+									摘要:
+								</td>
+								<td class="pn-fcontent">
+									<textarea id="description"  name="channel.description" 
+									style="width: 90%;height :60px;">${(channel.description)!}</textarea>
+								</td>
+							</tr>
+							<tr>
+								<td width="12%" class="pn-flabel pn-flabel-h">
+									栏目内容:
+								</td>
+								<td class="pn-fcontent">
+        <script type="text/javascript"> 
+var txt = new FCKeditor("content.txt");
+txt.BasePath = "/fckeditor/";
+txt.Config["CustomConfigurationsPath"]="/fckeditor/myconfig.js";
+ 
+txt.Config["LinkBrowser"] = true ;
+txt.Config["ImageBrowser"] = true ;
+txt.Config["FlashBrowser"] = true ;
+txt.Config["MediaBrowser"] = true ;
+ 
+txt.Config["LinkBrowserURL"] = "/fckeditor/editor/filemanager/browser/default/browser.html?Connector=/admin/fck/connector.do" ;
+txt.Config["ImageBrowserURL"] = "/fckeditor/editor/filemanager/browser/default/browser.html?Type=Image&Connector=/admin/fck/connector.do" ;
+txt.Config["FlashBrowserURL"] = "/fckeditor/editor/filemanager/browser/default/browser.html?Type=Flash&Connector=/admin/fck/connector.do" ;
+txt.Config["MediaBrowserURL"] = "/fckeditor/editor/filemanager/browser/default/browser.html?Type=Media&Connector=/admin/fck/connector.do" ;
+ 
+txt.Config["LinkUpload"] = true ;
+txt.Config["ImageUpload"] = true ;
+txt.Config["FlashUpload"] = true ;
+txt.Config["MediaUpload"] = true ;
+ 
+txt.Config["LinkUploadURL"] = "/admin/upload" ;
+txt.Config["ImageUploadURL"] = "/admin/upload" ;
+txt.Config["FlashUploadURL"] = "/admin/upload" ;
+txt.Config["MediaUploadURL"] = "/admin/upload" ;
+ 
+txt.ToolbarSet="My";
+txt.Height=230;
+txt.Value="${(channel.txt)!?js_string}";
+txt.Create();
+</script>
+        </td>
+							</tr>
+	<tr>
+		<td colspan="4" class="pn-fbutton">
+			<input type="hidden" name="channel.id" value="${(channel.id)!}" />
+			<input type="hidden" name="root" value="${(root)!}" />
+			<input type="submit" value="提交" class="submit" />
+			&nbsp;
+			<input type="reset" value="重置" class="reset" />
+		</td>
+	</tr>
+</table>
+<script type="text/javascript"> 
+$(function(){
+		if("${root}"!=173){
+			$("tr[name='zjsd']").hide();
+		}else {
+			$("tr[name='zjsd']").show();
+			$(".pn-ftable tr").slice(3,11).not(":eq(1)").hide();
+			$("#tr-media-content").hide();
+		}
+		
+		//给channel做一个默认值
+		$("input[name='channel.expert']").blur(function(){
+			$("input[name='channel.name']").val($(this).val());
+		});	
+			
+		"<#if channel?? && channel.parent_id??>"
+		var parentId = "${channel.parent_id!}";
+		$("#parent_id").val(parentId);
+		"</#if>"
+		"<#if channel?? && channel.tpl_channel??>"
+		var tpl_channel = "${channel.tpl_channel!}";
+		$("#tpl_channel").val(tpl_channel);
+		"</#if>"
+		"<#if channel?? && channel.tpl_content??>"
+		var tpl_content = "${channel.tpl_content!}";
+		$("#tpl_content").val(tpl_content);
+		"</#if>"
+		
+		"<#if channel?? && channel.is_display??>"
+		"<#if channel.is_display>"
+		//alert(${channel.is_display!?string('true','false')});
+		$('input:radio[name="channel.is_display"][value="true"]').attr('checked', true);
+		"<#else>"
+		$('input[type=radio][name="channel.is_display"][value="false"]').attr("checked", true);
+		//$("#channel.display").attr("checked",true); 此处不能用id来操作
+		"</#if>"
+		"</#if>"
+		
+		"<#if channel?? && channel.is_recommend??>"
+		"<#if channel.is_recommend>"
+		$('input:radio[name="channel.is_recommend"][value="true"]').attr('checked', true);
+		"<#else>"
+		$('input[type=radio][name="channel.is_recommend"][value="false"]').attr("checked", true);
+		"</#if>"
+		"</#if>"
+});
+
+</script>

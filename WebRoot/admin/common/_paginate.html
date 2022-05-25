@@ -1,0 +1,49 @@
+<#macro paginate currentPage totalPage totalRow actionUrl urlParas="">
+	<#if (totalPage <= 0) || (currentPage > totalPage)><#return></#if>
+	<#local startPage = currentPage - 4>
+	<#if (startPage < 1)><#local startPage = 1></#if>
+	
+	<#local endPage = currentPage + 4>
+	<#if (endPage > totalPage)><#local endPage = totalPage></#if>
+	
+	<#if (currentPage <= 8)>
+				<#local startPage = 1>
+			</#if>
+			<#if ((totalPage - currentPage) < 8)>
+				<#local endPage = totalPage>
+			</#if>
+			
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="23%"><div align="left"><span class="STYLE22">共<strong> ${totalRow}</strong> 条记录，当前第<strong> ${currentPage}</strong> 页，共 <strong>${totalPage}</strong> 页</span></div>
+        </td>
+        <td width="77%"><table width="412" border="0" align="right" cellpadding="0" cellspacing="0">
+          <tr>
+            <td width="49"><div align="center"><a href="${actionUrl}#{1}"><img src="/m/images/main_54.gif" width="40" height="15" /></a></div></td>
+            <td width="49"><div align="center">
+            <#if (currentPage == 1)>
+				<img src="/m/images/main_56.gif" width="45" height="15" />
+			<#else>
+				<a href="${actionUrl}#{currentPage - 1}${urlParas!}" class="prev_page"><img src="/m/images/main_56.gif" width="45" height="15" /></a>
+			</#if>
+            </div></td>
+            <td width="49"><div align="center">
+            <#if (currentPage == totalPage)>
+				<img src="/m/images/main_58.gif" width="45" height="15" />
+			<#else>
+				<a href="${actionUrl}#{currentPage + 1}${urlParas!}" class="next_page" rel="next"><img src="/m/images/main_58.gif" width="45" height="15" /></a>
+			</#if>
+            </div></td>
+            <td width="49"><div align="center"><a href="${actionUrl}#{totalPage}"><img src="/m/images/main_60.gif" width="40" height="15" /></a></div></td>
+            <td width="37" class="STYLE22"><div align="center">转到</div></td>
+            <td width="22"><div align="center">
+              <input type="text" name="pageNo" id="pageNo"  style="width:20px; height:12px; font-size:12px; border:solid 1px #7aaebd;"/>
+            </div></td>
+            <td width="22" class="STYLE22"><div align="center">页</div></td>
+            <td width="35"><img src="/m/images/main_62.gif" width="26" height="15" onClick="javascript:gotoPage('${actionUrl}');"/></td>
+            <td width="60"><div id="pageMsg" name="pageMsg" style="display:none;color:red">请填写页码</div></td>
+            </tr>
+        </table></td>
+      </tr>
+    </table>
+</#macro>

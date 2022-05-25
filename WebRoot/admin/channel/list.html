@@ -1,0 +1,72 @@
+<#include "/admin/common/_layout.html"/>
+<@layout>
+<#include "/admin/channel/top.html"/>
+<script type="text/javascript"> 
+$(function(){
+		if("${root}"!=173){
+			$("tr[name='zjsd']").hide();
+		}else {
+			$("tr[name='zjsd']").siblings("tr").hide();
+			$("tr[name='zjsd']").show();
+		}
+});
+</script>
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#a8c7ce">
+      <tr>
+        <td width="4%" height="20" bgcolor="d3eaef" class="STYLE10"><div align="center">
+          <input type="checkbox" onclick='Pn.checkbox("ids",this.checked)' />
+        </div></td>
+        <td width="10%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">栏目ID</span></div></td>
+        <td width="15%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">栏目名称</span></div></td>
+        <td width="15%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">访问路径</span></div></td>
+        <td width="14%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">排列顺序</span></div></td>
+        <td width="14%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">显示</span></div></td>
+        <td width="14%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">基本操作</span></div></td>
+      </tr>
+	  <tr name="zjsd">
+        <td width="4%" height="20" bgcolor="d3eaef" class="STYLE10"><div align="center">
+          <input type="checkbox" onclick='Pn.checkbox("ids_e",this.checked)' />
+        </div></td>
+        <td width="10%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">专家ID</span></div></td>
+        <td width="15%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">专家名</span></div></td>
+        <td width="15%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">访问路径</span></div></td>
+        <td width="14%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">专家职位</span></div></td>
+        <td width="14%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">专家介绍</span></div></td>
+        <td width="14%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">基本操作</span></div></td>
+      </tr>
+      <form id="tableForm" method="post">
+        <#list channelPage.getList() as x>
+  <tr>
+        <td height="20" bgcolor="#FFFFFF"><div align="center">
+          <input type="checkbox" name="ids" value="${x.id}" />
+        </div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE6"><div align="center"><span class="STYLE19">${x.id}</span></div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center"><a href="/admin/channel/list?root=${x.id}">${x.name!}</a></div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">${x.path!}</div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">${x.priority!}</div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">${x.is_display?string("是","否")}</div></td>
+        <td height="20" bgcolor="#FFFFFF"><div align="center" class="STYLE21"><a href="/admin/channel/edit/${x.id}-${root!}">修改</a> | <a href="/admin/channel/delete/${x.id}-${root!}">删除</a></div></td>
+  </tr>
+  <tr name="zjsd">
+        <td height="20" bgcolor="#FFFFFF"><div align="center">
+          <input type="checkbox" name="ids_e" value="${x.id!}" />
+        </div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE6"><div align="center"><span class="STYLE19">${x.id!}</span></div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center"><a href="/admin/channel/list?root=${x.id}">${x.expert!}</a></div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">${x.path!}</div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">${x.position!}</div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">${x.introduction!}</div></td>
+        <td height="20" bgcolor="#FFFFFF"><div align="center" class="STYLE21"><a href="/admin/channel/edit/${x.id}-${root!}">修改</a> | <a href="/admin/channel/delete/${x.id}-${root!}">删除</a></div></td>
+  </tr>
+  </#list>
+  </form>
+    </table></td>
+  </tr>
+  <tr>
+    <td height="30"><#include "/admin/common/_paginate.html" />
+	<@paginate currentPage=channelPage.pageNumber totalPage=channelPage.totalPage totalRow=channelPage.totalRow actionUrl="/admin/channel/list?root=${root!}&page=" /></td>
+  </tr>
+</table>
+</@layout>

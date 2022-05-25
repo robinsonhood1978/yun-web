@@ -1,0 +1,15 @@
+<#include "/admin/common/_layout.html" />
+<@layout>
+<div class="box-positon">
+	<div class="rpos">当前位置: 生产厂商管理 - 编辑</div>
+	<form class="ropt">
+		<input type="submit" value="返回列表" onclick="this.form.action='/admin/company';" class="return-button"/>
+	</form>
+	<div class="clear"></div>
+</div>
+<div class="body-box">
+	<form action="/admin/company/update" method="post">
+		<#include "_form.html" />
+	</form>
+</div>
+</@layout>

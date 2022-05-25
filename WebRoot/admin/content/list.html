@@ -1,0 +1,174 @@
+<#include "/admin/common/_layout.html"/>
+<@layout>
+<#include "/admin/content/top.html"/>
+<script type="text/javascript">
+function fun_search(){
+	document.getElementById("contentForm").submit();
+}
+//页面加载时下拉列表回显
+$(document).ready(function(){
+	var is_recommend="${is_recommend!}";
+	if(is_recommend!=null && is_recommend!=""){
+		$("#is_recommend").val(is_recommend);
+	}
+	var type_id="${type_id!}";
+	if(type_id!=null && type_id!=""){
+		$("#type_id").val(type_id);
+	}
+	var status="${status!}";
+	if(status!=null && status!=""){
+		$("#status").val(status);
+	}
+	var orderBy="${orderBy!}";
+	if(orderBy!=null && orderBy!=""){
+		$("#orderBy").val(orderBy);
+	}
+	if("${root}" !=173){
+		$("td[name='zjsd']").hide();
+	}else {
+		$("td[name='zjsd']").show();
+		$("td[name='zjsd']").siblings("td:eq(2)").attr("width","30%");
+	}
+});
+</script>
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+  	<td>
+  	<form name="contentForm" id="contentForm" action="/admin/content" method="post">
+  		<table width="100%" bgcolor="eeeeee">
+	  	<tr>
+	  		<td width="20%" align="left">
+	  			标题：<input type="text" name="title" id="title" value="${title!}" style="width: 110px"/>
+	  			<input type="hidden" name="root" id="root" value="${root!}"/>
+	  		</td>
+	  		<td width="20%" align="left">
+	  			发布者：<input type="text" name="creator" id="creator" value="${creator!}" style="width: 90px;"/>
+	  		</td>
+	  		<td width="20%" align="left">
+	  			是否推荐：
+				<select name="is_recommend" id="is_recommend">
+	  				<option value="2">所     有</option>
+	  				<option value="1">是</option>
+	  				<option value="0">否</option>
+	  			</select>
+	  		</td>
+	  		<td  width="20%" align="left">
+	  			类型：
+	  			<select name="type_id" id="type_id">
+	  				<option value="0">所     有</option>
+	  				<option value="1">普     通</option>
+	  				<option value="2">图     文</option>
+	  				<option value="3">焦     点</option>
+	  				<option value="4">头     条</option>
+	  			</select>
+	  		</td>
+	  		<td>
+	  			审核状态：
+				<select name="status" id="status">
+	  				<option value="4">所     有</option>
+	  				<option value="1">待审核</option>
+	  				<option value="3">未通过</option>
+	  				<option value="2">已通过</option>
+	  			</select>
+	  		</td>
+	  	</tr>
+	  	<tr>
+	  		<td colspan="2">
+	  			发布时间：
+	  			<input type="text" class="Wdate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="startTime" id="startTime" value="${startDateStr!}" style="width: 110px;" />
+	  			至
+	  			<input type="text" class="Wdate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" name="endTime" id="endTime" value="${endDateStr!}" style="width: 110px;" />
+	  		</td>
+	  		<td>
+	  			关键字：<input type="text" name="keyword" id="keyword" value="${keyword!}" style="width: 110px;"/>
+	  		</td>
+	  		<td>
+	  			<input type="button" value="查   询" onclick="fun_search();" style="width:110px;"/>
+	  		</td>
+	  		<td>
+	  			根据：
+				<select name="orderBy" id="orderBy" style="width:90px;" onchange="fun_search();">
+	  				<option value="id desc">文章ID降序</option>
+	  				<option value="id asc">文章ID升序</option>
+	  				<option value="release_date desc">发布时间降序</option>
+	  				<option value="release_date asc">发布时间升序</option>
+	  			</select>&nbsp;&nbsp;排序
+	  		</td>
+	  	</tr>
+	  </table>
+	  </form>
+  	</td>
+  </tr>
+  <tr>
+    <td><table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#a8c7ce">
+      <tr>
+        <td width="4%" height="20" bgcolor="d3eaef" class="STYLE10"><div align="center">
+          <input type="checkbox" onclick='Pn.checkbox("ids",this.checked)' />
+        </div></td>
+        <td width="5%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">内容ID</span></div></td>
+        <td width="25%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">内容名称</span></div></td>
+        <td width="12%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">栏目</span></div></td>
+        <td width="8%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">发布人</span></div></td>
+        <td width="11%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">发布日期</span></div></td>
+        <td width="9%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">状态</span></div></td>
+		<td name="zjsd" width="9%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">专家</span></div></td>
+        <td width="26%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">基本操作</span></div></td>
+      </tr>
+      <form id="tableForm" method="post">
+      <#if contentPage.getList()?? && contentPage.getList()?size gt 0>
+        <#list contentPage.getList() as x>
+  <tr>
+        <td height="20" bgcolor="#FFFFFF"><div align="center">
+          <input type="checkbox" name="ids" value="${x.id}" />
+        </div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE6"><div align="center"><span class="STYLE19">${x.id!}</span></div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center"><a href="/admin/content/toLook?id=${x.id!}&root=${root!}&title=${title!}&creator=${creator!}&is_recommend=${is_recommend!}&type_id=${type_id!}&status=${status!}&startTime=${startDateStr!}&endTime=${endDateStr!}&orderBy=${orderBy!}&keyword=${keyword!}&pageNum=${(contentPage.pageNumber)!}">
+        	<#if x.is_recommend==1>
+        		<font color="red">[已推]</font>
+        	</#if>
+        	
+        	<#if x.type_id==1>
+        		<font color="#999999">[普通]</font>
+        	<#elseif x.type_id==2>
+        		<font color="#999999">[图文]</font>
+        	<#elseif x.type_id==3>
+        		<font color="#999999">[焦点]</font>
+        	<#elseif x.type_id==4>
+        		<font color="#999999">[头条]</font>
+        	</#if>
+        	<@text_cut s=x.title len=9 append="..."/>
+        </a></div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">
+        	<input type="hidden" name="channel_id" id="channel_id" value="${x.channel_id!}"/>
+        	${x.channel_id.name!}
+        </div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE6"><div align="center"><span class="STYLE19">${x.creator.name!}</span></div></td>
+      	<td height="20" bgcolor="#FFFFFF" class="STYLE6"><div align="center"><span class="STYLE19">${x.release_date?string('yyyy-MM-dd')}</span></div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center"><span class="STYLE19">
+        <#if x.status==1><font color="#ff66ff">待审核...</font></#if>
+        <#if x.status==2><font color="blue">审核通过</font></#if>
+        <#if x.status==3><font color="red">审核未通过</font></#if>
+        </span></div></td>
+		<td name="zjsd" height="20" bgcolor="#FFFFFF" class="STYLE6"><div align="center"><span class="STYLE19">${x.expert!}</span></div></td>
+        <td height="20" bgcolor="#FFFFFF"><div align="center" class="STYLE21">
+        	<a href="/admin/content/toLook?id=${x.id!}&root=${root!}&title=${title!}&creator=${creator!}&is_recommend=${is_recommend!}&type_id=${type_id!}&status=${status!}&startTime=${startDateStr!}&endTime=${endDateStr!}&orderBy=${orderBy!}&keyword=${keyword!}&pageNum=${(contentPage.pageNumber)!}">审核</a> 
+        	| <a href="/admin/content/edit?id=${x.id!}&root=${root!}&title=${title!}&creator=${creator!}&is_recommend=${is_recommend!}&type_id=${type_id!}&status=${status!}&startTime=${startDateStr!}&endTime=${endDateStr!}&orderBy=${orderBy!}&keyword=${keyword!}&pageNum=${(contentPage.pageNumber)!}">修改</a>
+        	 | <a href="javascript:if(confirm('确定删除这条信息?')){window.location.href='/admin/content/delete?id=${x.id!}&root=${root!}&title=${title!}&creator=${creator!}&is_recommend=${is_recommend!}&type_id=${type_id!}&status=${status!}&startTime=${startDateStr!}&endTime=${endDateStr!}&orderBy=${orderBy!}&keyword=${keyword!}&pageNum=${(contentPage.pageNumber)!}';}">删除</a>
+        	  | <a href="/admin/content/comment?id=${x.id!}">评论</a>
+        	  | <a href="/${(x.channel_id.path)!}-${x.id!}" target="_blank">预览</a>
+        </div></td>
+  </tr>
+  </#list>
+  <#else>
+  	<tr><td colspan="8" align="center"><font color="red">没有查询到相关数据</font></td></tr>
+  </#if>
+  </form>
+    </table></td>
+  </tr>
+  <tr>
+    <td height="30"><#include "/admin/common/_paginate.html" />
+	<@paginate currentPage=contentPage.pageNumber totalPage=contentPage.totalPage totalRow=contentPage.totalRow actionUrl="/admin/content/index?root=${root!}&title=${title!}&creator=${creator!}&is_recommend=${is_recommend!}&type_id=${type_id!}&status=${status!}&startTime=${startDateStr!}&endTime=${endDateStr!}&orderBy=${orderBy!}&keyword=${keyword!}&pageNum=" urlParas=""/></td>
+  </tr>
+</table>
+
+</@layout>

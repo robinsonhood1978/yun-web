@@ -1,0 +1,17 @@
+<#include "/admin/common/_layout.html" />
+<@layout>
+<#include "/admin/advertising/top.html" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<div class="box-positon">
+	<div class="rpos">当前位置: 广告版位 - 添加</div>
+	<form class="ropt">
+		<input type="submit" value="返回列表" onclick="this.form.action='/admin/advertising/advertising';" class="return-button"/>
+	</form>
+	<div class="clear"></div>
+</div>
+<div class="body-box">
+	<form id="myForm" name="myForm" action="/admin/advertising/save" method="post">
+	<#include "_form.html" />
+	</form>
+</div>
+</@layout>

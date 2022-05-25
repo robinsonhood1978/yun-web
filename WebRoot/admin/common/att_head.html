@@ -1,0 +1,206 @@
+<link rel="stylesheet" href="/m/css/lightbox.css" type="text/css" media="screen" />
+<script src="/fckeditor/fckeditor.js" type="text/javascript"></script>
+<script src="/m/js/jquery.lightbox.js" type="text/javascript"></script>
+<script type="text/javascript"> 
+//上传附件
+function uploadAttachment(n) {
+	var af = $('#attachmentFile'+n);
+	//检查是否选择了文件
+	if(af.val()=='') {
+		alert('请选择要上传的文件');
+		return;
+	}
+	//将file移动至上传表单
+	$('#attachmentContent').empty();
+	$('#attachmentContent').append(af);
+	//复制一个file放至原处
+	$('#afc'+n).append(af.clone().attr('value',''));
+	$('#attachmentText'+n).attr('value','');
+	//修改属性
+	af.attr('id','');
+	//其他表单
+	$('#attachmentNum').val(n);
+	$('#attachmentForm').submit();
+}
+//预览图片
+function previewImg(n) {
+	var img = $("#attachmentPaths"+n).val();
+	if(img!="") {
+		if(img.indexOf("?")==-1) {
+			$("#preImg"+n).attr("src",img+"?d="+new Date()*1);
+		} else {
+			$("#preImg"+n).attr("src",img+"&d="+new Date()*1);
+		}
+		/*if(!$("#preImg"+n).attr("noResize")) {
+			$("#preImg"+n).css("width","auto");
+			$("#preImg"+n).css("height","auto");
+		}*/
+		$("#preImg"+n).css("width","100");
+		$("#preImg"+n).css("height","70");
+		$("#hrefImg"+n).attr("href",img);
+	} else {
+		$("#preImg"+n).removeAttr("src");		
+	}
+}
+</script>
+<form id="attachmentForm" action="/admin/att" method="post"
+	enctype="multipart/form-data" target="att_iframe"
+	style="display: none; width: 0px; height: 0px;">
+	<span id="attachmentContent"></span>
+	<input type="hidden" id="attachmentNum" name="attachmentNum" />
+</form>
+<iframe name="att_iframe" frameborder="0" border="0"
+	style="display: none; width: 0px; height: 0px;"></iframe>
+	
+	
+
+
+<script type="text/javascript"> 
+//内容增加时候 上传单个文件
+function uploadImg(textId,fileText) {
+	//检查是否选择了文件
+	var myFile = $("#"+textId);
+	if(myFile.val()=="") {
+		alert("请选择要上传的文件");
+		return;
+	}
+	//将file移动至上传表单
+	$("#mediaContent").empty();
+	$("#mediaContent").append(myFile);
+	//复制一个file放至原处
+	$('#mfc_'+fileText).append(myFile.clone().attr('value',''));
+	$('#'+fileText).attr('value','');
+	//修改属性
+	myFile.attr("id","");
+	//其他表单
+	$("#mediaFilename").val(textId);
+	$("#mediaForm").submit();
+}
+
+//剪裁图片
+function imgCut(n) {
+	if(n==1 && $("#path_title_imgFile").val()=="") {
+		alert("请上传图片!");
+		return;
+	}
+	if(n==2 && $("#path_content_imgFile").val()=="") {
+		alert("请上传图片!");
+		return;
+	}
+	if(n==3 && $("#path_type_imgFile").val()=="") {
+		alert("请上传图片!");
+		return;
+	}		
+	var uip = null;
+	var type = null;
+	if(n==1){
+	  uip = "#path_title_imgFile";
+	  type = "title_imgFile";
+	}
+	if(n==2){
+	  uip = "#path_content_imgFile";
+	  type = "content_imgFile";
+	}
+	if(n==3){
+	  uip = "#path_type_imgFile";
+	  type = "type_imgFile";
+	}
+	var url = "/admin/content/imageSelect?uploadNum="+type+"&imgSrcPath="
+		+$(uip).val()+"&zoomWidth="+$("#zoomWidth"+n).val()+"&zoomHeight="+$("#zoomHeight"+n).val();
+	window.open(url,"imgcut","height=550, width=1000, top=0, left=0, toolbar=no, menubar=no, scrollbars=auto, resizable=yes,location=no, status=no");
+}
+
+//预览图片
+function previewImg2(n) {
+	var img = $("#path_"+n).val();
+	if(img!="") {
+		if(img.indexOf("?")==-1) {
+			$("#preImg_"+n).attr("src",img+"?d="+new Date()*1);
+		} else {
+			$("#preImg_"+n).attr("src",img+"&d="+new Date()*1);
+		}
+		/*if(!$("#preImg"+n).attr("noResize")) {
+			$("#preImg"+n).css("width","auto");
+			$("#preImg"+n).css("height","auto");
+		}*/
+		$("#preImg_"+n).css("width","100");
+		$("#preImg_"+n).css("height","70");
+		$("#hrefImg_"+n).attr("href",img);
+	} else {
+		$("#preImg_"+n).removeAttr("src");		
+	}
+}
+</script>
+<form id="mediaForm" action="/admin/content/file" method="post"
+	enctype="multipart/form-data" target="media_iframe"
+	style="display: none; width: 0px; height: 0px;">
+	<span id="mediaContent"></span>
+	<input type="hidden" id="mediaFilename" name="mediaFilename" />
+</form>
+<iframe name="media_iframe" frameborder="0" border="0"
+	style="display: none; width: 0px; height: 0px;"></iframe>
+	
+	
+	
+	
+<script type="text/javascript"> 
+//培训视频模块的上传
+function uploadImg3(textId,fileText) {
+	//检查是否选择了文件
+	var myFile = $("#"+textId);
+	if(myFile.val()=="") {
+		alert("请选择要上传的文件");
+		return;
+	}
+	//将file移动至上传表单
+	$("#mediaContent3").empty();
+	$("#mediaContent3").append(myFile);
+	//复制一个file放至原处
+	$('#mfc_'+fileText).append(myFile.clone().attr('value',''));
+	$('#'+fileText).attr('value','');
+	//修改属性
+	myFile.attr("id","");
+	//其他表单
+	$("#mediaFilename3").val(textId);
+	$("#mediaForm3").submit();
+}
+</script>
+<form id="mediaForm3" action="/admin/training/file" method="post"
+	enctype="multipart/form-data" target="media_iframe3"
+	style="display: none; width: 0px; height: 0px;">
+	<span id="mediaContent3"></span>
+	<input type="hidden" id="mediaFilename3" name="mediaFilename" />
+</form>
+<iframe name="media_iframe3" frameborder="0" border="0"
+	style="display: none; width: 0px; height: 0px;"></iframe>
+	
+<script type="text/javascript"> 
+//培训视频模的视频缩略图的上传
+function uploadImgForTraining(textId,fileText) {
+	//检查是否选择了文件
+	var myFile = $("#"+textId);
+	if(myFile.val()=="") {
+		alert("请选择要上传的文件");
+		return;
+	}
+	//将file移动至上传表单
+	$("#mediaContent4").empty();
+	$("#mediaContent4").append(myFile);
+	//复制一个file放至原处
+	$('#mfc_'+fileText).append(myFile.clone().attr('value',''));
+	$('#'+fileText).attr('value','');
+	//修改属性
+	myFile.attr("id","");
+	//其他表单
+	$("#mediaFilename4").val(textId);
+	$("#mediaForm4").submit();
+}
+</script>
+<form id="mediaForm4" action="/admin/training/file2" method="post"
+	enctype="multipart/form-data" target="media_iframe4"
+	style="display: none; width: 0px; height: 0px;">
+	<span id="mediaContent4"></span>
+	<input type="hidden" id="mediaFilename4" name="mediaFilename" />
+</form>
+<iframe name="media_iframe4" frameborder="0" border="0"
+	style="display: none; width: 0px; height: 0px;"></iframe>

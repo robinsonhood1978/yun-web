@@ -1,0 +1,123 @@
+<div class="layuimini-main">
+
+    <div class="layui-form layuimini-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">ID</label>
+            <div class="layui-input-block">
+                <input type="text" id="quoteId" readonly value="" class="layui-input">
+                
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">运输方式</label>
+            <div class="layui-input-block">
+                <input type="text" id="quote_freight_type" value="" readonly class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">重量</label>
+            <div class="layui-input-block">
+                <input type="text" id="quote_weight" value="" readonly class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">出发地</label>
+            <div class="layui-input-block">
+                <input type="text" id="quote_departure" value="" readonly class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">目的地</label>
+            <div class="layui-input-block">
+                <input type="text" id="quote_destination" value="" readonly class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">Email</label>
+            <div class="layui-input-block">
+                <input type="text" id="quote_email" value="" readonly class="layui-input">
+            </div>
+        </div>
+        
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">回复标记</label>
+            <div id="reply" class="layui-input-block">
+                
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+var json = parent.json;
+//alert(JSON.stringify(json));
+    layui.use(['form', 'table'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            table = layui.table,
+            $ = layui.$;
+
+        /**
+         * 初始化表单，要加上，不然刷新部分组件可能会不加载
+         */
+        
+        
+        if(json.replied==0){
+        	$('#reply').append("<input type='checkbox' quoteId = '" + json.id + "' lay-filter='reply' lay-skin='switch' lay-text='已回复|未回复'>");
+        }
+        else{
+        	$('#reply').append("<input type='checkbox' quoteId = '" + json.id + "' lay-filter='reply' lay-skin='switch' lay-text='已回复|未回复' checked>");
+        }
+        form.render();
+        
+        $('#quoteId').val(json.id);
+        $('#quote_freight_type').val(json.freight_type);
+        $('#quote_weight').val(json.weight);
+        $('#quote_departure').val(json.departure);
+        $('#quote_destination').val(json.destination);
+        $('#quote_email').val(json.email);
+        
+        
+        if(json.viewed==0){
+        	$.get('/api/quote_status?status=1&id='+json.id, function (data) {
+            	console.log("stauts updated");
+            });
+        }
+
+        // 当前弹出层，防止ID被覆盖
+        var parentIndex = layer.index;
+		
+        form.on('switch(reply)', function (data) {
+            let quoteId = data.elem.attributes['quoteId'].nodeValue;
+            let checked = data.elem.checked;
+            let status;
+            if(checked){
+            	status = 1;
+            }
+            else{
+            	status = 0;
+            }
+           	$.get('/api/quote_reply?status='+status+'&id='+quoteId, function (data) {
+               	console.log("stauts updated");
+            });
+        });
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+            
+
+                // 关闭弹出层
+                
+                layer.close(parentIndex);
+
+            
+
+            return false;
+        });
+
+    });
+</script>

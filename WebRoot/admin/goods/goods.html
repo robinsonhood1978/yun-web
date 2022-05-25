@@ -1,0 +1,110 @@
+<#include "/admin/common/_layout.html"/>
+<@layout>
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td height="30"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td height="24" bgcolor="#353c44"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="6%" height="19" valign="bottom"><div align="center"><img src="/m/images/tb.gif" width="14" height="14" /></div></td>
+                <td width="94%" valign="bottom"><font color="#ffffff"><span class="STYLE1"> 商品信息列表</span></font></td>
+              </tr>
+            </table></td>
+            <td><div align="right"><span class="STYLE1">
+              <input type="checkbox" onclick='Pn.checkbox("ids",this.checked)'/>
+              <font color="#ffffff">全选 </font>     &nbsp;&nbsp;<img src="/m/images/add.gif" width="10" height="10" /> <a href="/admin/goods/batch"><font color="#ffffff">商品批量导入</font></a> 
+&nbsp;&nbsp;<img src="/m/images/add.gif" width="10" height="10" /> <a href="/admin/goods/add"><font color="#ffffff">添加</font></a> 
+                &nbsp; <img src="/m/images/del.gif" width="10" height="10" /> <a href="#" onclick="optDelete('/admin/goods/delete');"><font color="#ffffff">删除</font> </a>   <span class="STYLE1"> &nbsp;</span></div></td>
+          </tr>
+        </table></td>
+      </tr>
+    </table></td>
+  </tr>
+  <#if resultMsg??>
+  <tr>
+  <td align="center">
+  	<font color="blue">${resultMsg!}</font>
+  </td>
+  </tr>
+  </#if>
+  <tr>
+  <td align="center">
+  	<form id="searchForm" name="searchForm" action="/goods" method="post">
+  	商品名称：<input name="pname" size=10 value="${pname!}">
+  	商品目录：<select name="cat_id" id="cat_id" WIDTH="150" STYLE="width:150px">
+  	<option value="0">所有目录</option>
+<#if catList?? && catList?size gt 0>
+<#assign origdepth=catList[0].depth+1/>
+<#list catList as c>
+	<option value="${c.id}"><#if c.depth gte origdepth><#list origdepth..c.depth as i>&nbsp;&nbsp;</#list>></#if>${c.name}</option>
+</#list>
+</#if>
+</select>
+  	生产厂商：<select name="company_id" id="company_id">
+  	<option value="0">全部厂商</option>
+		<#list companyList as c>
+			<option value="${(c.id)!}">${(c.name)!}</option>
+		</#list>
+	</select>
+  	<input name="export" id="export" type="hidden" value="0">
+  	<input type="button" value="搜索" onClick="search();">
+  	</form>
+  </td>
+  </tr>
+  <tr>
+    <td><table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#a8c7ce">
+      <tr>
+        <td width="4%" height="20" bgcolor="d3eaef" class="STYLE10"><div align="center">
+          <input type="checkbox" onclick='Pn.checkbox("ids",this.checked)' />
+        </div></td>
+        <td width="20%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">商品名称</span></div></td>
+        <td width="15%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">所属商品目录</span></div></td>
+        <td width="15%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">生产厂商</span></div></td>
+        <td width="14%" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">基本操作</span></div></td>
+      </tr>
+      <form id="tableForm" method="post">
+        <#list goodsPage.getList() as x>
+  <tr>
+        <td height="20" bgcolor="#FFFFFF"><div align="center">
+          <input type="checkbox" name="ids" value="${x.id}" />
+        </div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE6"><div align="center"><span class="STYLE19">${x.name!}</span></div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">${x.category!}</div></td>
+        <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">${x.company!}</div></td>
+        <td height="20" bgcolor="#FFFFFF"><div align="center" class="STYLE21"><a href="/admin/goods/edit/${x.id}">修改</a> | <a href="/admin/goods/delete/${x.id}">删除</a></div></td>
+  </tr>
+  </#list>
+  </form>
+    </table></td>
+  </tr>
+  <tr>
+    <td height="30"><#include "/admin/common/_paginate.html" />
+	<@paginate currentPage=goodsPage.pageNumber totalPage=goodsPage.totalPage totalRow=goodsPage.totalRow actionUrl="/admin/goods/" /></td>
+  </tr>
+</table>
+</@layout>
+<script type="text/javascript"> 
+<#if cat_id?? >
+$("#cat_id").val("${(cat_id)!}");
+</#if>
+<#if company_id?? >
+$("#company_id").val("${(company_id)!}");
+</#if>
+function exportExcel(){
+	$("#searchForm").action="/goods";
+	$("#export").val("1");
+	$("#searchForm").submit();
+}
+function exportBarcodeExcel(){
+	$("#searchForm").action="/goods";
+	$("#export").val("2");
+	$("#searchForm").submit();
+}
+function search(){
+	$("#searchForm").action="/goods";
+	$("#export").val("0");
+	$("#searchForm").submit();
+}
+</script>

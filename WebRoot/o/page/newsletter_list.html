@@ -1,0 +1,203 @@
+<div class="layuimini-container layuimini-page-anim">
+    <div class="layuimini-main">
+
+        <fieldset class="table-search-fieldset">
+            <legend>搜索信息</legend>
+            <div style="margin: 10px 10px 10px 10px">
+                <form class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">Email</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="sex" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">渠道</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="city" autocomplete="off" class="layui-input"></div></div>
+                        <div class="layui-inline">
+                            <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
+
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+				<button id="exportExcel" class="layui-btn layui-btn-normal layui-btn-sm data-add-btn"> 导出 </button>
+                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除 </button>
+            </div>
+        </script>
+
+        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+
+        <script type="text/html" id="currentTableBar">
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+        </script>
+
+    </div>
+</div>
+
+<script>
+
+    layui.use(['form', 'table','miniPage','element'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table,
+            miniPage = layui.miniPage;
+
+        table.render({
+            elem: '#currentTableId',
+            //url: 'api/vistor_info.json',
+            url: '/api/newsletter_list',
+            toolbar: '#toolbarDemo',
+            defaultToolbar: ['filter', 'exports', 'print', {
+                title: '提示',
+                layEvent: 'LAYTABLE_TIPS',
+                icon: 'layui-icon-tips'
+            }],
+            cols: [[
+                {type: "checkbox", width: 50},
+                {field: 'id', width: '5%', title: 'ID', sort: true},
+                {field: 'email', width: '20%', title: 'Email', sort: true},
+                {field: 'channel', width: '20%', title: '渠道来源'},
+                {field: 'create_date', title: '订阅时间', minWidth: 250},
+                {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
+            ]],
+            limits: [2, 10, 15, 20, 25, 50, 100],
+            limit: 2,
+            page: true,
+            skin: 'line'
+        });
+
+        // 监听搜索操作
+        form.on('submit(data-search-btn)', function (data) {
+            var result = JSON.stringify(data.field);
+            layer.alert(result, {
+                title: '最终的搜索信息'
+            });
+
+            //执行搜索重载
+            table.reload('currentTableId', {
+                page: {
+                    curr: 1
+                }
+                , where: {
+                    searchParams: result
+                }
+            }, 'data');
+
+            return false;
+        });
+
+        /**
+         * toolbar事件监听
+         */
+        table.on('toolbar(currentTableFilter)', function (obj) {
+            if (obj.event === 'add') {   // 监听添加操作
+                var content = miniPage.getHrefContent('page/table/add.html');
+                var openWH = miniPage.getOpenWidthHeight();
+
+                var index = layer.open({
+                    title: '添加用户',
+                    type: 1,
+                    shade: 0.2,
+                    maxmin:true,
+                    shadeClose: true,
+                    area: [openWH[0] + 'px', openWH[1] + 'px'],
+                    offset: [openWH[2] + 'px', openWH[3] + 'px'],
+                    content: content,
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+            } else if (obj.event === 'delete') {  // 监听删除操作
+                var checkStatus = table.checkStatus('currentTableId')
+                    , data = checkStatus.data;
+                layer.alert(JSON.stringify(data));
+            }
+        });
+
+        //监听表格复选框选择
+        table.on('checkbox(currentTableFilter)', function (obj) {
+            console.log(obj)
+        });
+
+        table.on('tool(currentTableFilter)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'edit') {
+
+                var content = miniPage.getHrefContent('page/table/add.html');
+                var openWH = miniPage.getOpenWidthHeight();
+
+                var index = layer.open({
+                    title: '编辑用户',
+                    type: 1,
+                    shade: 0.2,
+                    maxmin:true,
+                    shadeClose: true,
+                    area: [openWH[0] + 'px', openWH[1] + 'px'],
+                    offset: [openWH[2] + 'px', openWH[3] + 'px'],
+                    content: content,
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+                return false;
+            } else if (obj.event === 'delete') {
+                layer.confirm('真的删除行么', function (index) {
+                    obj.del();
+                    layer.close(index);
+                });
+            }
+        });
+        
+        $("#exportExcel").click(function(){
+        	var index = layer.load(1, {
+    	    	shade: [0.5,'#000'] //0.1透明度的背景
+    		});
+    	   
+    	   $.get("/api/newsletter_excel",function(jsonData,status){
+    		    layer.close(index);
+    		    if(status=='success' ){
+    		    	
+    		        // 列标题，逗号隔开，每一个逗号就是隔开一个单元格
+    		        let str = 'ID,Email,渠道来源,订阅日期\n';
+    		        // 增加\t为了不让表格显示科学计数法或者其他格式
+    		        for(let i = 0 ; i < jsonData.length ; i++ ){
+    		            //for(const key in jsonData[i]){
+    		                str+=`${jsonData[i]['id'] + '\t'},`;  
+    		                str+=`${jsonData[i]['email'] + '\t'},`;
+    		                str+=`${jsonData[i]['channel'] + '\t'},`;
+    		                str+=`${jsonData[i]['create_date'] + '\t'},`;
+    		            //}
+    		            str+='\n';
+    		        }
+    		        // encodeURIComponent解决中文乱码
+    		        const uri = 'data:text/csv;charset=utf-8,\ufeff' + encodeURIComponent(str);
+    		        // 通过创建a标签实现
+    		        const link = document.createElement("a");
+    		        link.href = uri;
+    		        // 对下载的文件命名
+    		        link.download =  "newsletter_list.csv";
+    		        link.click();
+    		    	layer.open({
+    					title:'Information',
+    					btn:'OK',
+    					content:'Success'
+    				});
+    		    }
+    		    else{
+    		    	layer.open({
+    					title:'Information',
+    					btn:'OK',
+    					content:'Network failure'
+    				});
+    		    }
+    		  });
+        });
+
+    });
+</script>

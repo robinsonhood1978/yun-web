@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<script type="text/javascript" src="/m/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="/m/js/js.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<script type="text/javascript">
+function fun_search(queryStr){
+	document.getElementById("queryStr").value=queryStr;
+	document.myForm.submit();
+}
+</script>
+</head>
+<body>
+<form  id="myForm" name="myForm" action="/admin/content/userSearch" method="post">
+	<a href="/admin/content/dateToIndex" style="display: ">刷新lucene的数据库索引(不要点，否则索引冗余！)</a>
+	<input type="hidden" name="queryStr" id="queryStr" readonly="readonly" value="${queryStr!}"/>
+	<center>
+		<input type="text" name="userSearch" id="userSearch" value="${queryStr!}"/>
+		<input type="button" onclick="fun_search(userSearch.value);" value="百度一下"/><br />
+	</center>
+<table width="75%" align="center">
+<#if contentPage.getList()?? && contentPage.getList()?size gt 0> 
+<#list contentPage.getList() as x>
+<tr>
+	<td align="left"><a href="#">${x.title!}</a></td>
+</tr>
+<tr>
+	<td align="left"><font size="-1">${x.txt!}</font></td>
+</tr>
+<tr>
+	<td align="left"><br/></td>
+</tr>
+</#list>
+<#else>
+<tr>
+	<td align="center"><font color="red" size="+1">抱歉，没有找到相关数据。</font></td>
+</tr>
+</#if>
+<tr>
+	<td><#include "/admin/content/_paginateLucene.html" />
+	<@paginate currentPage=contentPage.pageNumber totalPage=contentPage.totalPage totalRow=contentPage.totalRow actionUrl="/admin/content/userSearch?queryStr=${queryStr!}&pageNum=" urlParas=queryStr/>
+	</td>
+</tr>
+</table>
+</form>
+</body>
+</html>

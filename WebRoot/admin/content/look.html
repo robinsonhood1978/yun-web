@@ -1,0 +1,10 @@
+<#include "/admin/common/_layout.html" />
+<@layout>
+<#include "/admin/content/top.html"/>
+<div class="body-box">
+	<form id="myForm" name="myForm" action="" method="post">
+		<#include "_detail.html" />
+	</form>
+	<form id="viewInFront" action="/${content.channel_id.path}-${content.id!}" target="_blank" method="get"></form>
+</div>
+</@layout>

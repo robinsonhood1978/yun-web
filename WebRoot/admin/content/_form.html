@@ -1,0 +1,674 @@
+<table id="prototype" width="100%" class="pn-ftable" cellpadding="2" cellspacing="1" border="0">
+<tr><td width="12%" class="pn-flabel pn-flabel-h"><span class="pn-frequired">*</span>栏目:</td><td class="pn-fcontent">
+<select name="content.channel_id" id="channel_id0"  WIDTH="200" STYLE="width:200px" onchange="fun_isEnd(this,isEndDiv0,isEndHidden0);" onfocus="fun_onFocus(this);">
+<option value="0" lft="-5" rgt="-3">顶级栏目</option>
+<#if channelList?? && channelList?size gt 0>
+<#assign origdepth=channelList[0].depth+1/>
+<#list channelList as c>
+	<option style="background-color:#ffffff" value="${c.id}" lft="${c.lft}" rgt="${c.rgt}">
+	<#if c.depth gte origdepth>
+		<#list origdepth..c.depth as i>&nbsp;&nbsp;</#list>
+		>
+	</#if>${c.name!}
+	</option>
+</#list>
+</#if>
+</select>
+<input type="button" name="sideChannel" id="sideChannel" onclick="add_channel();" value="添加副栏目"/>
+<input type="hidden" name="isEndHidden" id="isEndHidden0" value="0"/>
+<div id="isEndDiv0" style="width: 100px;height: 20px;display: none;color: red">*请选择末级节点*</div>
+<table id="channelTable" ></table>
+<#if content_att?? && content_att?size gt 0>
+<#list content_att as attach>
+	<input type="hidden" name="attachmentPathHiddens" value="${attach.url!}"/>
+</#list>
+</#if>
+</td>
+</tr>
+<script type="text/javascript">
+//提取关键字时候的异步ajax处理
+function fun_drawKeywords(){
+	document.getElementById("keywordsSpan").style.display="";
+	var oEditor = FCKeditorAPI.GetInstance('content.txt');
+    var pEditor = oEditor.EditorDocument.body.innerText;
+   	var str = pEditor;//获取字符串
+	if(window.XMLHttpRequest){
+		http_request=new XMLHttpRequest();
+	}else if(window.ActiveXObject){
+		http_request=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	if(null == str || "" == str){
+		document.getElementById("keywordsSpan").style.display="none";
+		return;
+	}
+	str=str.replace(/%/g, "*");
+	str=str.replace(/&/g, "*");
+	var content="str="+str;
+	http_request.open("post","/admin/content/drawKeywords",true);
+	http_request.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	http_request.send(content);
+	http_request.onreadystatechange = returnKeywords;
+	
+}
+function returnKeywords(){
+	if(http_request.readyState==4){
+		if(http_request.status == 200){
+			var result=http_request.responseText;
+			if(result=="" || result==null){
+				alert("未找到关键字,如需手动添加关键字,以两个'/'分割 如: 木材//原产地");
+				return;
+			}
+			document.getElementById("keywords").value=result;
+		}else{
+			alert("出现异常,请刷新后重试");
+		}
+	}
+	document.getElementById("keywordsSpan").style.display="none";
+}
+</script>
+<tr name="bsevaluate">
+	<td width="15%" class="pn-flabel pn-flabel-h"><span class="pn-frequired"></span>期刊数:</td>
+	<td class="pn-fcontent">
+		<input type="text" size="70" id="number" maxlength="100" name="content.number" value="${(content.number)!}" maxlength="100"/>
+	</td>
+</tr>
+<tr name="bsevaluate">
+	<td width="15%" class="pn-flabel pn-flabel-h"><span class="pn-frequired">*</span>访谈嘉宾:</td>
+	<td class="pn-fcontent">
+		<textarea id="guest"  name="content.guest" style="width: 90%;height :60px;">${(content.guest)!}</textarea>
+	</td>
+</tr>
+<tr name="bsevaluate">
+	<td width="15%" class="pn-flabel pn-flabel-h"><span class="pn-frequired">*</span>嘉宾介绍:</td>
+	<td class="pn-fcontent">
+		<textarea id="introduction"  name="content.introduction" style="width: 90%;height :60px;">${(content.introduction)!}</textarea>
+	</td>
+</tr>
+<tr>
+	<td width="15%" class="pn-flabel pn-flabel-h"><span class="pn-frequired">*</span>文章标题:</td>
+	<td class="pn-fcontent">
+		<input type="text" size="70" id="title" maxlength="100" name="content.title" value="${(content.title)!}" maxlength="100"/>
+	</td>
+</tr>
+<tr>
+	<td width="15%" class="pn-flabel pn-flabel-h"><span class="pn-frequired"></span>文章摘要:</td>
+	<td class="pn-fcontent">
+		<textarea id="description"  name="content.description" style="width: 90%;height :60px;">${(content.description)!}</textarea>
+	</td>
+</tr>
+<tr>
+	<td width="15%" class="pn-flabel pn-flabel-h"><span class="pn-frequired"></span>文章作者:</td>
+	<td class="pn-fcontent">
+		<input type="text" size="20" id="author" maxlength="100" name="content.author" value="${(content.author)!}"/>
+	</td>
+</tr>
+<tr>
+	<td width="15%" class="pn-flabel pn-flabel-h"><span class="pn-frequired"></span>自定义发布日期:</td>
+	<td class="pn-fcontent">
+		<input type="text" class="Wdate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" name="content.custom_time" id="customTime" value="${(content.custom_time?string('yyyy-MM-dd HH:mm:ss'))!}" style="width: 210px;" />
+		<font color="red">*不选择默认为当前时间*</font>
+	</td>
+</tr>
+<tr>
+	<td width="15%" class="pn-flabel pn-flabel-h"><span class="pn-frequired"></span>文章来源:</td>
+	<td class="pn-fcontent">
+		<input type="text" size="20" id="origin" maxlength="100" name="content.origin" value="${(content.origin)!}"/>
+	</td>
+</tr>
+<tr>
+	<td width="15%" class="pn-flabel pn-flabel-h"><span class="pn-frequired"></span>来源链接:</td>
+	<td class="pn-fcontent">
+		<input type="text" size="50" id="origin_url" maxlength="100" name="content.origin_url" value="${(content.origin_url)!}"/>
+	</td>
+</tr>
+<tr><td width="15%" class="pn-flabel pn-flabel-h">关键字:</td>
+	<td class="pn-fcontent">
+		<input type="text" size="70" maxlength="100" name="keywords" id="keywords" value="${keywords!}" />
+		<input type="button" name="drawKeywords" id="drawKeywords" onclick="fun_drawKeywords()" value="提取关键字"/>
+		<span id="keywordsSpan" style="display: none"><font color="red">loading...</font></span>可主动添加关键字,关键字之间用“//”进行分隔，如 “木材//钢材//农产品”
+	</td>
+</tr>
+<tr>
+        <td class="pn-flabel pn-flabel-h">
+          内容：
+        </td>
+        <td class="pn-fcontent">
+        <script type="text/javascript"> 
+        //var article='${(content.txt)!?js_string}';
+        //article=article.replace(/img src/g,'img class="am-img-responsive" src');
+        //alert(article);
+var txt = new FCKeditor("txt");
+txt.BasePath = "/fckeditor/";
+txt.Config["CustomConfigurationsPath"]="/fckeditor/myconfig.js";
+ 
+txt.Config["LinkBrowser"] = true ;
+txt.Config["ImageBrowser"] = true ;
+txt.Config["FlashBrowser"] = true ;
+txt.Config["MediaBrowser"] = true ;
+ 
+txt.Config["LinkBrowserURL"] = "/fckeditor/editor/filemanager/browser/default/browser.html?Connector=/admin/fck/connector.do" ;
+txt.Config["ImageBrowserURL"] = "/fckeditor/editor/filemanager/browser/default/browser.html?Type=Image&Connector=/admin/fck/connector.do" ;
+txt.Config["FlashBrowserURL"] = "/fckeditor/editor/filemanager/browser/default/browser.html?Type=Flash&Connector=/admin/fck/connector.do" ;
+txt.Config["MediaBrowserURL"] = "/fckeditor/editor/filemanager/browser/default/browser.html?Type=Media&Connector=/admin/fck/connector.do" ;
+ 
+txt.Config["LinkUpload"] = true ;
+txt.Config["ImageUpload"] = true ;
+txt.Config["FlashUpload"] = true ;
+txt.Config["MediaUpload"] = true ;
+ 
+txt.Config["LinkUploadURL"] = "/admin/upload" ;
+txt.Config["ImageUploadURL"] = "/admin/upload" ;
+txt.Config["FlashUploadURL"] = "/admin/upload" ;
+txt.Config["MediaUploadURL"] = "/admin/upload" ;
+ 
+txt.ToolbarSet="My";
+txt.Height=230;
+txt.Value='${(content.txt)!?js_string}';
+txt.Create();
+</script>
+        </td>
+</tr>
+<tr>
+	<td width="15%" class="pn-flabel pn-flabel-h">内容类型:</td>
+	<td class="pn-fcontent">
+		<#if content??>
+			<input type="hidden" name="typeHidden" id="typeHidden" value="${content.type_id!}"/>
+		<#else>
+			<input type="hidden" name="typeHidden" id="typeHidden" value="1"/>
+		</#if>
+		<#if contentTypeList?? && contentTypeList?size gt 0>
+		<select name="content.type_id" id="type_id">
+			<#list contentTypeList as t>
+			<option value="${t.type_id}">${t.type_name}</option>
+			</#list>
+		</select>
+		</#if>
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<#if content?? >
+			<input type="checkbox" id="recommend_check" onclick="fun_is_recommend(this);"/>推荐<input type="hidden" id="is_recommend" name="content.is_recommend" value="${content.is_recommend!}"/>
+		<#else>
+			<input type="checkbox" id="recommend_check" onclick="fun_is_recommend(this);"/>推荐<input type="hidden" id="is_recommend" name="content.is_recommend" value="0"/>
+		</#if>
+		<input type="hidden" id="status" name="content.status" value="1"/>
+	</td>
+</tr>
+<tr id="tr-media">
+        <td class="pn-flabel pn-flabel-h"><div>
+          	标题图
+        </div></td>
+        <td colspan="3" class="pn-fcontent">
+          <table border="0">
+          	<tr>
+          		<td class="pn-fcontent">
+          			<div>
+						<input type="text" readonly="readonly" id="path_title_imgFile" name="content.title_img" style="width:200px" value="${(content.title_img)!}"/>
+						<input type="hidden" id="titleHidden" name="titleHidden" value="${(content.title_img)!}"/>
+					</div>
+				</td>
+        		<td class="pn-fcontent">
+        			<span id="mfc_mediaFileText1" style="margin-top:7px;position:relative;display:block;width:300px;*width:300px;">
+					<input type='text' id='mediaFileText1'/>  
+					<input class="browse" type='button' value='浏览'/>
+					<input onchange="$('#mediaFileText1').val(this.value)" size="19" type="file" name="title_imgFile" id="title_imgFile" style="height:24px;opacity:0;filter:alpha(opacity=0);position:absolute;right:79px;top:2px;"/>
+					<input type="button" value="上传" onclick="uploadImg('title_imgFile','mediaFileText1');" class="upload-button"/>
+					<br/>宽: <input type="text" id="zoomWidth1" value="100" size="5"/> 高: <input type="text" id="zoomHeight1" value="100" size="5"/> <input type="button" value="裁剪" onclick="imgCut(1);" class="cut-button"/>
+					</span> 
+					<input type="hidden" id="prototype_title_imgFile" name="prototype_title_imgFile"/>
+				</td>
+				<td align="center">
+					<#if content??>
+					<a class="lightbox" rel="bigimg" id="hrefImg_title_imgFile" href="${content.title_img!}">
+						<img id="preImg_title_imgFile" src="${(content.title_img)!}" alt="预览" style="width:100px;height:70px;background-color:#ccc;border:1px solid #333"/>
+					</a>
+					</#if>
+				</td>
+			</tr>
+		  </table>
+        </td>
+</tr>
+<tr id="tr-media">
+        <td class="pn-flabel pn-flabel-h"><div>
+          	内容图
+        </div></td>
+        <td colspan="3" class="pn-fcontent">
+          <table border="0">
+          	<tr>
+          		<td class="pn-fcontent">
+          			<div>
+						<input type="text" readonly="readonly" id="path_content_imgFile" name="content.content_img" style="width:200px" value="${(content.content_img)!}"/>
+						<input type="hidden" id="contentHidden" name="contentHidden" value="${(content.content_img)!}"/>
+					</div>
+				</td>
+        		<td class="pn-fcontent">
+        			<span id="mfc_mediaFileText2" style="margin-top:7px;position:relative;display:block;width:300px;*width:300px;">
+					<input type='text' id='mediaFileText2'/>  
+					<input class="browse" type='button' value='浏览'/>
+					<input onchange="$('#mediaFileText2').val(this.value)" size="19" type="file" name="content_imgFile" id="content_imgFile" style="height:24px;opacity:0;filter:alpha(opacity=0);position:absolute;right:79px;top:2px;"/>
+					<input type="button" value="上传" onclick="uploadImg('content_imgFile','mediaFileText2');" class="upload-button"/>
+					<br/>宽: <input type="text" id="zoomWidth2" value="100" size="5"/> 高: <input type="text" id="zoomHeight2" value="100" size="5"/> <input type="button" value="裁剪" onclick="imgCut(2);" class="cut-button"/>
+					</span> 
+					<input type="hidden" id="prototype_content_imgFile" name="prototype_content_imgFile"/>
+				</td>
+				<td align="center">
+				<#if content??>
+					<a class="lightbox" rel="bigimg" id="hrefImg_content_imgFile" href="${content.content_img!}">
+					<img id="preImg_content_imgFile" src="${(content.content_img)!}" alt="预览" style="width:100px;height:70px;background-color:#ccc;border:1px solid #333"/>
+					</a>
+				</#if>
+				</td>
+			</tr>
+		  </table>
+        </td>
+</tr>
+<tr id="tr-media">
+        <td class="pn-flabel pn-flabel-h"><div>
+          	类型图
+        </div></td>
+        <td colspan="3" class="pn-fcontent">
+          <table border="0">
+          	<tr>
+          		<td class="pn-fcontent">
+          			<div>
+						<input type="text" readonly="readonly" id="path_type_imgFile" name="content.type_img" style="width:200px" value="${(content.type_img)!}"/>
+						<input type="hidden" id="typeHidden" name="typeHidden" value="${(content.type_img)!}"/>
+					</div>
+				</td>
+        		<td class="pn-fcontent">
+        			<span id="mfc_mediaFileText3" style="margin-top:7px;position:relative;display:block;width:300px;*width:300px;">
+					<input type='text' id='mediaFileText3'/>  
+					<input class="browse" type='button' value='浏览'/>
+					<input onchange="$('#mediaFileText3').val(this.value)" size="19" type="file" name="type_imgFile" id="type_imgFile" style="height:24px;opacity:0;filter:alpha(opacity=0);position:absolute;right:79px;top:2px;"/>
+					<input type="button" value="上传" onclick="uploadImg('type_imgFile','mediaFileText3');" class="upload-button"/>
+					<br/>宽: <input type="text" id="zoomWidth3" value="100" size="5"/> 高: <input type="text" id="zoomHeight3" value="100" size="5"/> <input type="button" value="裁剪" onclick="imgCut(3);" class="cut-button"/>
+					</span> 
+					<input type="hidden" id="prototype_type_imgFile" name="prototype_type_imgFile"/>
+				</td>
+				<td align="center">
+				<#if content??>
+					<a class="lightbox" rel="bigimg" id="hrefImg_type_imgFile" href="${content.type_img!}">
+					<img id="preImg_type_imgFile" src="${(content.type_img)!}" alt="预览" style="width:100px;height:70px;background-color:#ccc;border:1px solid #333"/>
+					</a>
+				</#if>
+				</td>
+			</tr>
+		  </table>
+        </td>
+</tr>
+
+<tr id="tr-attachments">
+<td width="10%" class="pn-flabel">附件:</td><td colspan="3" width="90%" class="pn-fcontent">
+<table id="attachTable" border="0">
+<tr>
+	<td align="center"><input class="add" type="button" onclick="addAttachLine();" value="增加"/></td>
+	<td align="center">附件名称</td>
+	<td align="center">附件地址</td>
+	<td align="center">上传</td>
+</tr>
+<#if content_att??>
+<#list content_att as attach>
+<tr id="attachTr${attach_index}">
+	<td align="center">
+		<a onclick="$('#attachTr${attach_index}').remove();" href="javascript:void(0);" class="pn-opt">删除</a>
+	</td>
+	<td align="center"><input readonly="readonly" type="text" id="attachmentNames${attach_index}" name="attachmentNames" value="${attach.name!}"/></td>
+	<td align="center"><input readonly="readonly" type="text" id="attachmentPaths${attach_index}" name="attachmentPaths" value="${attach.url!}"/></td>
+	<td align="center">
+		<span id="afc${attach_index}" style="margin-top:7px;position:relative;display:block;width:300px;*width:300px;">
+		<input type='text' id='attachmentText${attach_index}'/>  
+		<input class="browse" type='button' value='浏览'/>
+		<input onchange="$('#attachmentText${attach_index}').val(this.value)" size="19" type="file" name="attachmentFile" id="attachmentFile${attach_index}" style="height:24px;opacity:0;filter:alpha(opacity=0);position:absolute;right:69px;top:2px;"/>
+		<input type="button" value="上传" onclick="uploadAttachment('${attach_index}');" class="upload-button"/>
+		</span>
+		<input type="hidden" id="attachmentFilenames${attach_index}" name="attachmentFilenames"/>
+	</td>
+</tr>
+</#list>
+<#else>
+<tr id="attachTr0">
+	<td align="center"><a onclick="$('#attachTr0').remove();" href="javascript:void(0);" class="pn-opt">删除</a></td>
+	<td align="center"><input readonly="readonly" type="text" id="attachmentNames0" name="attachmentNames"/></td>
+	<td align="center"><input readonly="readonly" type="text" id="attachmentPaths0" name="attachmentPaths"/></td>
+	<td align="center">
+		<span id="afc0" style="margin-top:7px;position:relative;display:block;">
+		<input type='text' id='attachmentText0'/>  
+		<input class="browse" type='button' value='浏览'/>
+		<input onchange="$('#attachmentText0').val(this.value)" size="19" type="file" name="attachmentFile" id="attachmentFile0" style="height:24px;opacity:0;filter:alpha(opacity=0);position:absolute;right:69px;top:2px;"/>
+		<input type="button" value="上传" onclick="uploadAttachment(0);" class="upload-button"/>
+		</span>
+		<input type="hidden" id="attachmentFilenames0" name="attachmentFilenames"/>
+	</td>
+</tr>
+</#if>
+</table>
+<textarea id="attachTr" style="display:none">
+<tr id="attachTr{0}">
+	<td align="center"><a onclick="$('#attachTr{0}').remove();" href="javascript:void(0);" class="pn-opt">删除</a></td>
+	<td align="center"><input readonly="readonly" type="text" id="attachmentNames{0}" name="attachmentNames"/></td>
+	<td align="center"><input readonly="readonly" type="text" id="attachmentPaths{0}" name="attachmentPaths"/></td>
+	<td align="center">
+		<span id="afc{0}" style="margin-top:7px;position:relative;display:block;width:300px;*width:300px;">
+		<input type='text' id='attachmentText{0}'/>  
+		<input class="browse" type='button' value='浏览'/>
+		<input onchange="$('#attachmentText{0}').val(this.value)" size="19" type="file" name="attachmentFile" id="attachmentFile{0}" style="height:24px;opacity:0;filter:alpha(opacity=0);position:absolute;right:69px;top:2px;"/>
+		<input type="button" value="上传" onclick="uploadAttachment({0});" class="upload-button"/>
+		</span>
+		<input type="hidden" id="attachmentFilenames{0}" name="attachmentFilenames"/>
+	</td>
+</tr>
+</textarea>
+<script type="text/javascript">
+"<#if content_att??>"
+var attachIndex = "${content_att?size}";
+"<#else>"
+var attachIndex = 1;
+"</#if>"
+var attachTpl = $.format($("#attachTr").val());
+function addAttachLine() {
+	$('#attachTable').append(attachTpl(attachIndex++));
+}
+</script>
+</td> 
+</tr>
+
+<tr><td colspan="2" class="pn-fbutton">
+<input type="hidden" name="content.id" value="${(content.id)!}" />
+<input type="hidden" name="content.txt" id="mytxt" value="" />
+<input type="hidden" name="root" value="${root!}"/>
+<input type="hidden" name="title" value="${title!}"/>
+<input type="hidden" name="creator" value="${creator!}"/>
+<input type="hidden" name="is_recommend" value="${is_recommend!}"/>
+<input type="hidden" name="type_id" value="${type_id!}"/>
+<input type="hidden" name="status" value="${status!}"/>
+<input type="hidden" name="startDateStr" value="${startDateStr!}"/>
+<input type="hidden" name="endDateStr" value="${endDateStr!}"/>
+<input type="hidden" name="orderBy" value="${orderBy!}"/>
+<input type="hidden" name="keyword" value="${keyword!}"/>
+<input type="hidden" name="pageNum" value="${pageNum!}"/>
+<img src="/m/images/bc.gif" width="62" height="18" onClick="fun_onSubmit();"/> <img src="/m/images/cz.gif" width="62" height="18" onClick="history.go(-1);"/>
+</td>
+</tr></table>
+
+<script type="text/javascript">
+//修改的时候 主栏目的Id 
+"<#if content?? && content.channel_id??>"	
+	var channelId = "${content.channel_id!}";
+"<#else>"
+	var channelId=0;
+"</#if>"
+//定义公有数组channelOptions   存放已经选中的栏目  避免重复选中 
+var channelOptions=[];
+//定义栏目下拉列表被改变前初始的option的value变量 initValue
+var initValue;
+//定义boolean类型变量  initFlag判断下拉列表得到焦点时候时候是末级节点 
+var initFlag;
+//新建下拉类表时候标记不同id的标识 mark
+var mark=100;
+
+$(document).ready(function(){
+	$("#channel_id0").val(channelId);
+	var channel=document.getElementById("channel_id0");
+	var isEndDiv=document.getElementById("isEndDiv0");
+	var isEndHidden=document.getElementById("isEndHidden0");
+	var channelOpt=channel.options;
+	//调用fun_isEnd()之前必须判断是否是末级(initFlag)关系到公有数组的操作  
+	fun_onFocus(channel);
+	 
+	//页面加载时候对树tree的非末级节点颜色进行控制
+	fun_channelColor(channel);
+	//判断完非末级节点后  动态显示Div提示
+	fun_isEnd(channel,isEndDiv,isEndHidden);
+	
+	//隐藏大宗会客厅的几个字段
+	if($("#channel_id0 option:contains('会客厅列表')").attr("selected") != "selected"){
+		$("tr[name='bsevaluate']").hide();
+	};
+	
+	//页面加载时判断推荐（check标签）的回显选中
+    var recommend=$('#is_recommend').val();
+    if(recommend==1){
+		document.getElementById("recommend_check").checked=true;
+    }else{
+    	document.getElementById("recommend_check").checked=false;
+    }
+    
+  	//页面加载时type（content.type_id）类型的的回显选中 
+    var type_id=$('#typeHidden').val();
+    var typeArr=document.getElementById("type_id");
+    for(var i=0;i<typeArr.length;i++){
+		if(type_id==typeArr[i].value){
+			typeArr[i].selected=true;
+			return;
+		}
+    }
+    
+	//不要动  否则导致修改功能出错 
+	$(".lightbox").lightbox({
+   	 	fitToScreen: true,
+    	imageClickClose: false
+	});
+});
+
+//勾选推荐的时候 向推荐hidden改变值（0默认不推荐,1推荐）
+function fun_is_recommend(x){
+	if(x.checked){
+		$('#is_recommend').val(1);
+	}else{
+		$('#is_recommend').val(0);
+	}
+}
+
+//增添副栏目调用 
+function add_channel(){
+	var newTr=document.getElementById("channelTable").insertRow();
+	var newTd=newTr.insertCell(0);
+	newTr.id="tr_id"+mark;
+	newTr.setAttribute("mark",mark);
+	var a='<select name="channel_id" id="channel_id'+mark+'" WIDTH="200" STYLE="width:200px" onchange="fun_isEnd(this,isEndDiv'+mark+',isEndHidden'+mark+');" onfocus="fun_onFocus(this);">';
+	a+='<option value="0" lft="-5" rgt="-3">顶级栏目</option>';
+	<#if channelList?? && channelList?size gt 0>
+		<#assign origdepth=channelList[0].depth+1/>
+		<#list channelList as c>
+			a+='<option style="background-color:#ffffff" value="${c.id}" lft="${c.lft}" rgt="${c.rgt}">';
+			<#if c.depth gte origdepth>
+				<#list origdepth..c.depth as i>
+					a+="&nbsp;&nbsp;"
+				</#list>
+				a+=">";
+			</#if>
+		a+='${c.name}';
+		a+='</option>';
+		</#list>
+	</#if>
+	a+='</select>';
+	a+='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onclick="remove_channel(channelTable,\'tr_id'+mark+'\');">删除</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+	a+='<input type="hidden" name="isEndHidden" id="isEndHidden'+mark+'" value="0"/>'
+	a+='<div id="isEndDiv'+mark+'" style="width: 100px;height: 20px;display: none;color: red">*请选择末级节点*</div>';
+	newTd.innerHTML=a;
+	fun_channelColor(document.getElementById('channel_id'+mark));
+	//公有类型判断是否是末级节点变量initFlag赋值false 否则删除最后一次操作value
+	initFlag=false;
+	fun_isEnd(document.getElementById('channel_id'+mark),document.getElementById('isEndDiv'+mark),document.getElementById('isEndHidden'+mark));
+	mark++;
+}
+//删除副栏目时候调用  根据删除的行来找到对应的下拉列表 然后把下拉别表中对应的value在公有数组channelOptions中移除 
+function remove_channel(channelTable,rowNum){
+	arr=channelTable.childNodes[0].childNodes;
+	for(var i=0;i<arr.length;i++){
+		if(arr[i].id==rowNum){
+			var thisMark=document.getElementById(rowNum).getAttribute("mark");
+			var thisValue=document.getElementById("channel_id"+thisMark).value;
+			var flag=isContains(channelOptions,thisValue);
+			if(flag){
+				arr_remove(channelOptions,thisValue);
+			}
+			channelTable.deleteRow(i);
+		}
+	}
+}
+
+//点击栏目下拉列表时候收集其初始值  便于用户选择重复栏目时跳回到之前的option 再判断得到焦点时候是否是末级状态 
+function fun_onFocus(selectObj){
+	initValue=selectObj.value;
+	var channelArr=selectObj.options;
+	for(var i=0;i<channelArr.length;i++){
+		var isEnd=channelArr[i].getAttribute("rgt")-channelArr[i].getAttribute("lft");
+		if(isEnd==1){
+			if(channelArr[i].value==initValue){
+				initFlag=true;
+				return;
+			}
+		}
+	}
+	initFlag=false;
+}
+
+//选择树节点的时候判断是否是末级节点   并且展示Div给用户提示  并判断是否已经是选过的节点 
+function fun_isEnd(channel,isEndDiv,isEndHidden){
+	var real_value=channel.value;
+	var channelArr=channel.options;
+	//隐藏大宗会客厅的几个字段
+	if($("select[id^='channel_id'] option:contains('会客厅列表')").attr("selected") != "selected"){
+		$("tr[name='bsevaluate']").hide();
+	}else {
+		$("tr[name='bsevaluate']").show();
+	};
+	 
+	for(var i=0;i<channelArr.length;i++){
+		//右边减去左边等于1证明是末级节点 
+		var isEnd=channelArr[i].getAttribute("rgt")-channelArr[i].getAttribute("lft");
+		if(isEnd==1){
+			if(channelArr[i].value==real_value){
+				isEndDiv.style.display="none";
+				isEndHidden.value="1";
+				//得到焦点之前不是末级的时候
+				if(!initFlag){
+					//判断公有数组内时候已经包含了这个选中的栏目  调用函数 isContains();
+					var flag=isContains(channelOptions,real_value);
+					if(!flag){
+						//如果公有数组内不存在这个value则加到里面 
+						channelOptions.push(real_value);
+						initValue=real_value;
+						initFlag=true;
+					}else{
+						//如果已经存在了就不加到数组里  并给用户提示 再让下拉列表回显到选中前状态   最后改变初始值也是否是末级状态 否则出现bug
+						alert("此栏目已经在副栏目中,请从新选择");
+						for(var i=0;i<channelArr.length;i++){
+							if(channelArr[i].value==initValue){
+								channelArr[i].selected=true;
+							}
+						}
+						isEndDiv.style.display="inline";
+						isEndHidden.value="0";
+					}
+				}else{
+					//得到焦点前已经是末级的时候  
+					var flag=isContains(channelOptions,real_value);
+					if(!flag){
+						//如果公有数组内不存在这个value 首先移除原有的在公有数组中的value 再添加新的value进去  最后改变初始值也是否是末级状态 否则出现bug
+						arr_remove(channelOptions,initValue);
+						channelOptions.push(real_value);
+						initValue=real_value;
+						initFlag=true;
+					}else{
+						alert("此栏目已经在副栏目中,请从新选择");
+						for(var i=0;i<channelArr.length;i++){
+							if(channelArr[i].value==initValue){
+								channelArr[i].selected=true;
+							}
+						}
+						isEndDiv.style.display="none";
+						isEndHidden.value="1";
+					}
+				}
+				return;
+			}
+		}
+	}
+	//如果是从末级改到非末级 则删除公有数组里对应的value值  
+	if(initFlag){
+		arr_remove(channelOptions,initValue);
+	}
+	isEndDiv.style.display="inline";
+	isEndHidden.value="0";
+}
+//对树tree的非末级节点颜色进行控制
+function fun_channelColor(channel){
+	var channelArr=channel.options;
+	for(var i=0;i<channelArr.length;i++){
+		var isEnd=channelArr[i].getAttribute("rgt")-channelArr[i].getAttribute("lft");
+		if(isEnd!=1){
+			channelArr[i].style.background="#cccccc";
+		}
+	}
+}
+// 获取编辑器中HTML内容
+function getEditorHTMLContents(EditorName) {
+var oEditor = FCKeditorAPI.GetInstance(EditorName);
+return(oEditor.GetXHTML(true));
+}
+
+// 获取编辑器中文字内容
+function getEditorTextContents(EditorName) {
+var oEditor = FCKeditorAPI.GetInstance(EditorName);
+return(oEditor.EditorDocument.body.innerText);
+}
+
+// 设置编辑器中内容
+function SetEditorContents(EditorName, ContentStr) {
+var oEditor = FCKeditorAPI.GetInstance(EditorName) ;
+oEditor.SetHTML(ContentStr) ;
+}
+//提交表单时候判断当前是否是末级节点   不是的话给出提示;
+function fun_onSubmit(){
+	var oEditor = FCKeditorAPI.GetInstance('txt');
+    var ContentStr = oEditor.GetXHTML(true);
+    ContentStr=ContentStr.replace(/img src/g,'img class="am-img-responsive" src');
+    oEditor.SetHTML(ContentStr) ;
+    $('#mytxt').val(ContentStr);
+	//alert($('#mytxt').val());
+	//alert(ContentStr2);
+	var hiddenArr=document.getElementsByName("isEndHidden");
+	for(var i=0;i<hiddenArr.length;i++){
+		if(hiddenArr[i].value==0){
+			alert("请选择末级节点进行操作");
+			return;
+		}
+	}
+	var title=document.getElementById("title").value;
+	if(title==""){
+		alert("请填写标题");
+		return;
+	}
+	
+	//$("#txt").val($("#editor1").html().trim().replace(/img src/g,'img class="am-img-responsive" src'));
+    
+	$('#myForm').submit();
+}
+//判断数组里是否包含指定元素 
+function isContains(arr,myValue){
+	for(var i=0;i<arr.length;i++){
+		if(arr[i]==myValue){
+			return true;
+		}
+	}
+	return false;
+}
+//数组内删除指定元素
+function arr_remove(arr,myValue){
+	for(var i=0;i<arr.length;i++){
+		if(arr[i]==myValue){
+			arr.splice(i,1);
+		}
+	}
+}
+//页面加载的时候 回显副栏目 并选中对应的节点  并把已有加入公有数组channelOptions中 
+"<#if contentChannelList?? && contentChannelList?size gt 0>"
+	"<#list contentChannelList as ccl>"
+		var thisMark=mark
+		add_channel();
+		var sideChannel = "${ccl.channel_id!}";
+		$("#channel_id"+thisMark).val(sideChannel);
+		fun_isEnd(document.getElementById('channel_id'+thisMark),document.getElementById('isEndDiv'+thisMark),document.getElementById('isEndHidden'+thisMark));
+	"</#list>"
+"</#if>"
+</script>

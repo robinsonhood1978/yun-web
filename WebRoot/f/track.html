@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Demo | Timeline</title>
+
+<link rel="stylesheet" type="text/css" href="css/timeline.css">
+
+</head>
+<body>
+
+<div class="content">
+	
+	<article id="art">
+		<h3 id="title"></h3>
+		
+		<div id="tpl" style="display:none;">
+		<section>
+			<span class="point-time point-[point_color]"></span>
+			<time datetime="2012-02">
+				<span>[track_day]</span>
+				<span>[track_time]</span>
+			</time>
+			<aside>
+				<p class="things">[track_et]</p>
+				<p class="brief"><span class="text-[text_color]">[track_ur]</span></p>
+			</aside>
+		</section>
+		</div>
+	</article>
+</div>
+<script src="js/jquery.min.js"></script>
+<script src="js/layer/layer.js"></script> 
+<script type="text/javascript">
+    $(function(){
+
+    	function random(min, max) {
+    	  return Math.floor(Math.random() * (max - min) + min) ;
+    	}
+    	 
+    	//for (var i = 1; i <= 100; i++) {
+    	  //console.log(random(0, 100));
+    	//}
+    	
+    	var json = parent.trackJson;
+    	//let jn = JSON.stringify(json);
+    	console.log(json);
+    	let msg = json.message;
+    	$('#title').html(msg);
+    	let arr = json.object;
+    	arr.forEach((v, i) => {
+    		let event = v.event;
+    		let tm = v.create_time;
+    		tm = tm.substring(0,tm.indexOf('.'));
+    		let day = tm.split("T")[0];
+    		let time = tm.split("T")[1];
+    		let user = v.user;
+    		console.log(v.event);
+    		copyNode('tpl',event,day,time,user);
+    	})
+    	
+    	String.prototype.replaceAll = function(search, replacement) {
+    	    var target = this;
+    	    return target.split(search).join(replacement);
+    	};
+    	function parseDom(arg) {
+
+        	var objE = document.createElement("div");
+
+        	objE.innerHTML = "<div>"+arg+"</div>";
+
+        	return objE.childNodes;
+
+        }
+    	function copyNode(nodeid,event,day,time,user){
+    		var sourceNode = document.getElementById(nodeid); // 获得被克隆的节点对象 
+    		var clonedNode = sourceNode.cloneNode(true); // 克隆节点 
+    		//console.log(sourceNode.innerHTML)
+    		//console.log('--------------------')
+    		$node = $(clonedNode);
+    		let colors = ['green','blue','red']; 
+        	let point = random(0, 100)%3;
+        	let txt = random(0, 100)%3;
+        	//$node.find('button[id="bt_mobile"]').css("display","block");
+    		
+    		var html = $node.html().replaceAll('[track_et]',event);  
+    		html = html.replaceAll('[track_day]',day); 
+    		html = html.replaceAll('[track_time]',time); 
+    		html = html.replaceAll('[track_ur]',user);  
+    		html = html.replaceAll('[point_color]',colors[point]); 
+    		html = html.replaceAll('[text_color]',colors[txt]); 
+    		//console.log(html)
+    		var newnode = parseDom(html);
+    		sourceNode.parentNode.appendChild($(newnode)[0]); // 在父节点插入克隆的节点 
+    	}
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,27 @@
+<table width="100%" class="pn-ftable" cellpadding="2" cellspacing="1" border="0">
+<tr><td width="12%" class="pn-flabel pn-flabel-h"><span class="pn-frequired">*</span>中文名称:</td>
+<td colspan="3" width="38%" class="pn-fcontent">
+${(config.name)!}</td>
+</tr>
+<tr><td width="12%" class="pn-flabel pn-flabel-h"><span class="pn-frequired"></span>英文代码</td>
+<td colspan="3" width="38%" class="pn-fcontent">
+${(config.code)!}
+</td></tr>
+<tr><td width="12%" class="pn-flabel pn-flabel-h"><span class="pn-frequired"></span>是否开启</td>
+<td colspan="3" width="38%" class="pn-fcontent">
+<select name="config.value" id="value" WIDTH="100" STYLE="width:100px">
+	<option value="0">关闭</option>
+	<option value="1">开启</option>
+</select>
+</td></tr>
+<tr><td colspan="4" class="pn-fbutton">
+<input type="hidden" name="config.id" value="${(config.id)!}" />
+<input type="submit" value="提交" class="submit"/> &nbsp; <input type="reset" value="重置" class="reset"/></td>
+</tr></table>
+<script type="text/javascript"> 
+<#if config??>
+<#if (config.value)?? >
+$("#value").val("${(config.value)!}");
+</#if>
+</#if>
+</script>

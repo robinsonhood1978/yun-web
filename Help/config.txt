@@ -1,0 +1,4 @@
+jdbcUrl = jdbc:mysql://docker.for.mac.host.internal/yun_web?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+user = robin
+password = robin123
+devMode = true

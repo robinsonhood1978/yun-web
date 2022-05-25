@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>网站内容管理系统</title>
+<script type="text/javascript">
+if(top!=this) {
+	top.location=this.location;
+}
+</script>
+<link rel="stylesheet" type="text/css" href="/m/css/style.css"/>
+<script src="/m/js/jquery-1.8.3.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="/m/js/js.js"></script>
+<script type="text/javascript" src="/m/js/easy_validator.pack.js"></script>
+<script type="text/javascript" src="/m/js/jquery.bgiframe.min.js"></script>
+<link href="/m/css/validate.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"> </div>
+<form id="login" name="login" action="/login" method="post">
+  <div id="center">
+    <div id="center_left"></div>
+    <div id="center_middle">
+      <div class="user">
+        <label>用户名：
+        <input type="text" name="user" id="user" reg="^.+$" tip="不能为空" />
+        </label>
+      </div>
+      <div class="user">
+        <label>密　码：
+        <input type="password" name="pwd" id="pwd" reg="^.+$" tip="不能为空"/>
+        </label>
+      </div>
+      <div class="user">
+        验证码：
+        <input name="vcode" type="text" id="chknumber" maxlength="6" class="chknumber_input" reg="^.+$" tip="不能为空"/>
+        
+        <!--img src="/img" onclick="this.src='img?d='+new Date()*1"  width="55" height="20" /-->
+        
+        
+      </div>
+      &nbsp;&nbsp;&nbsp;&nbsp;<img src="/Kaptcha.jpg" onclick="this.src='/Kaptcha.jpg?d='+new Date()*1" />
+      <#if resultMsg??><div class="user">${resultMsg!}</div></#if>
+    </div>
+    <div id="center_middle_right"></div>
+    <div id="center_submit">
+      <div class="button"> <input type="submit" value="" class="loginSubmit"> </div>
+      <div class="button"> <img src="/m/images/cz.gif" width="57" height="20" onclick="form_reset()"> </div>
+    </div>
+    <div id="center_right"></div>
+  </div>
+</form>
+<div id="footer"></div>
+</body>
+</html>

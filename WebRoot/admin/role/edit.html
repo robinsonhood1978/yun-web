@@ -1,0 +1,44 @@
+<#include "/admin/common/_layout.html" />
+<@layout>
+<script type="text/javascript">
+var perms = [<#list uris as p>"${p}"<#if p_has_next>,</#if></#list>];
+function disablePerms() {
+	if($("input[name=super]:checked").val()=="true") {
+		$(".perm-container input[type=checkbox]").attr("disabled","disabeld");
+	} else {
+		$(".perm-container input[type=checkbox]").removeAttr("disabled");
+	}
+}
+$(function() {
+	disablePerms();
+	$(".perm-container input[type=checkbox]").each(function() {
+		var perm = $(this).val();
+		var index = perm.indexOf(",");		
+		if(index!=-1) {
+			perm = perm.substring(0,index);
+		}
+		for(var i=0,len=perms.length;i<len;i++) {
+			if(perms[i]==perm) {
+				$(this).attr("checked",true);
+				break;
+			}
+		}
+	});
+	$("input[name=super]").bind("click",function(){
+		disablePerms();
+	});
+});
+</script>
+<div class="box-positon">
+	<div class="rpos">当前位置: 角色管理 - 修改</div>
+	<form class="ropt">
+		<input type="submit" value="返回列表" onclick="this.form.action='/admin/role';" class="return-button"/>
+	</form>
+	<div class="clear"></div>
+</div>
+<div class="form_box">
+	<form id="myForm" name="myForm" action="/admin/role/update" method="post">
+		<#include "_form.html" />
+	</form>
+</div>
+</@layout>

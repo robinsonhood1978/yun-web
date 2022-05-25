@@ -1,0 +1,344 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<script type="text/javascript" src="/m/js/jquery.js"></script>
+<script type="text/javascript" src="/m/js/chili-1.7.pack.js"></script>
+<script type="text/javascript" src="/m/js/jquery.easing.js"></script>
+<script type="text/javascript" src="/m/js/jquery.dimensions.js"></script>
+<script type="text/javascript" src="/m/js/jquery.accordion.js"></script>
+<script language="javascript">
+	jQuery().ready(function(){
+		jQuery('#navigation').accordion({
+			header: '.head',
+			navigation1: true, 
+			event: 'click',
+			fillSpace: true,
+			animated: 'bounceslide'
+		});
+	});
+</script>
+<style type="text/css">
+<!--
+body {
+	margin:0px;
+	padding:0px;
+	font-size: 12px;
+}
+#navigation {
+	margin:0px;
+	padding:0px;
+	width:147px;
+}
+#navigation a.head {
+	cursor:pointer;
+	background:url(/m/images/main_34.gif) no-repeat scroll;
+	display:block;
+	font-weight:bold;
+	margin:0px;
+	padding:5px 0 5px;
+	text-align:center;
+	font-size:12px;
+	text-decoration:none;
+}
+#navigation ul {
+	border-width:0px;
+	margin:0px;
+	padding:0px;
+	text-indent:0px;
+}
+#navigation li {
+	list-style:none; display:inline;
+}
+#navigation li li a {
+	display:block;
+	font-size:12px;
+	text-decoration: none;
+	text-align:center;
+	padding:3px;
+}
+#navigation li li a:hover {
+	background:url(/m/images/tab_bg.gif) repeat-x;
+		border:solid 1px #adb9c2;
+}
+.STYLE3 {
+	font-size: 12px;
+	color: #435255;
+}
+.STYLE4 {font-size: 12px}
+.STYLE5 {font-size: 12px; font-weight: bold; }
+-->
+</style>
+</head>
+<body>
+<div  style="height:100%;">
+  <ul id="navigation">
+  <@menu all="${session.menu}" url="/pm/">
+    <li> <a class="head">商品</a>
+      <ul>
+       <@menu all="${session.menu}" url="/admin/category/">
+        <li>
+        <table width="82%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+          <td height="38"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="33" height="28"><img src="/m/images/6.jpg" width="28" height="28"></td>
+              <td width="99"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td height="23" class="STYLE4" style="cursor:hand" onMouseOver="this.style.backgroundImage='url(/m/images/tab_bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#adb9c2'; "onmouseout="this.style.backgroundImage='url()';this.style.borderStyle='none'"><a href="/admin/category/all" target="rightFrame">目录</a></td>
+                  </tr>
+              </table></td>
+            </tr>
+          </table></td>
+        </tr>
+        </table>
+        </li>
+        </@menu>
+        <@menu all="${session.menu}" url="/admin/goods/">
+        <li>
+        <table width="82%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+          <td height="38"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="33" height="28"><img src="/m/images/1.jpg" width="28" height="28"></td>
+              <td width="99"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td height="23" class="STYLE4" style="cursor:hand" onMouseOver="this.style.backgroundImage='url(/m/images/tab_bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#adb9c2'; "onmouseout="this.style.backgroundImage='url()';this.style.borderStyle='none'"><a href="/admin/goods" target="rightFrame">商品</a></td>
+                  </tr>
+              </table></td>
+            </tr>
+          </table></td>
+        </tr>
+        </table>
+        </li>
+        </@menu>
+        <@menu all="${session.menu}" url="/admin/company/">
+        <li>
+        <table width="82%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+          <td height="38"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="33" height="28"><img src="/m/images/1.jpg" width="28" height="28"></td>
+              <td width="99"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td height="23" class="STYLE4" style="cursor:hand" onMouseOver="this.style.backgroundImage='url(/m/images/tab_bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#adb9c2'; "onmouseout="this.style.backgroundImage='url()';this.style.borderStyle='none'"><a href="/admin/company" target="rightFrame">厂商</a></td>
+                  </tr>
+              </table></td>
+            </tr>
+          </table></td>
+        </tr>
+        </table>
+        </li>
+        </@menu>
+      </ul>
+    </li>
+    </@menu>
+    <@menu all="${session.menu}" url="/im/">
+    <li><a class="head">文章</a>
+      <ul>
+        <@menu all="${session.menu}" url="/admin/channel/">
+        <li>
+        <table width="82%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+          <td height="38"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="33" height="28"><img src="/m/images/20.jpg" width="28" height="28"></td>
+              <td width="99"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td height="23" class="STYLE4" style="cursor:hand" onMouseOver="this.style.backgroundImage='url(/m/images/tab_bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#adb9c2'; "onmouseout="this.style.backgroundImage='url()';this.style.borderStyle='none'"><a href="/admin/channel" target="rightFrame">栏目</a></td>
+                  </tr>
+              </table></td>
+            </tr>
+          </table></td>
+        </tr>
+        </table>
+        </li>
+        </@menu>
+        <@menu all="${session.menu}" url="/admin/content/">
+        <li>
+        <table width="82%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+          <td height="38"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="33" height="28"><img src="/m/images/1.jpg" width="28" height="28"></td>
+              <td width="99"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td height="23" class="STYLE4" style="cursor:hand" onMouseOver="this.style.backgroundImage='url(/m/images/tab_bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#adb9c2'; "onmouseout="this.style.backgroundImage='url()';this.style.borderStyle='none'"><a href="/admin/content/entry" target="rightFrame">内容</a></td>
+                  </tr>
+              </table></td>
+            </tr>
+          </table></td>
+        </tr>
+        </table>
+        </li>
+        </@menu>
+      </ul>
+    </li>
+    </@menu>
+    
+    
+    <@menu all="${session.menu}" url="/fm/">
+    <li><a class="head">系统</a>
+      <ul>
+      	<@menu all="${session.menu}" url="/admin/content/tagIndex/">
+        <li>
+        <table width="82%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+          <td height="38"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="33" height="28"><img src="/m/images/1.jpg" width="28" height="28"></td>
+              <td width="99"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td height="23" class="STYLE4" style="cursor:hand" onMouseOver="this.style.backgroundImage='url(/m/images/tab_bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#adb9c2'; "onmouseout="this.style.backgroundImage='url()';this.style.borderStyle='none'"><a href="/admin/content/tagIndex" target="rightFrame">关键字</a></td>
+                  </tr>
+              </table></td>
+            </tr>
+          </table></td>
+        </tr>
+        </table>
+        </li>
+        </@menu>
+      	<@menu all="${session.menu}" url="/admin/advertising/">
+        <li>
+        <table width="82%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+          <td height="38"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="33" height="28"><img src="/m/images/1.jpg" width="28" height="28"></td>
+              <td width="99"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td height="23" class="STYLE4" style="cursor:hand" onMouseOver="this.style.backgroundImage='url(/m/images/tab_bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#adb9c2'; "onmouseout="this.style.backgroundImage='url()';this.style.borderStyle='none'"><a href="/admin/advertising/advertising" target="rightFrame">广告</a></td>
+                  </tr>
+              </table></td>
+            </tr>
+          </table></td>
+        </tr>
+        </table>
+        </li>
+        </@menu>
+        <@menu all="${session.menu}" url="/admin/friendlink/">
+        <li>
+        <table width="82%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+          <td height="38"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="33" height="28"><img src="/m/images/20.jpg" width="28" height="28"></td>
+              <td width="99"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td height="23" class="STYLE4" style="cursor:hand" onMouseOver="this.style.backgroundImage='url(/m/images/tab_bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#adb9c2'; "onmouseout="this.style.backgroundImage='url()';this.style.borderStyle='none'"><a href="/admin/friendlink" target="rightFrame">友情链接</a></td>
+                  </tr>
+              </table></td>
+            </tr>
+          </table></td>
+        </tr>
+        </table>
+        </li>
+        </@menu>
+        <@menu all="${session.menu}" url="/admin/friendlinkctg/">
+        <li>
+        <table width="82%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+          <td height="38"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="33" height="28"><img src="/m/images/20.jpg" width="28" height="28"></td>
+              <td width="99"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td height="23" class="STYLE4" style="cursor:hand" onMouseOver="this.style.backgroundImage='url(/m/images/tab_bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#adb9c2'; "onmouseout="this.style.backgroundImage='url()';this.style.borderStyle='none'"><a href="/admin/friendlinkctg" target="rightFrame">友情链接类型</a></td>
+                  </tr>
+              </table></td>
+            </tr>
+          </table></td>
+        </tr>
+        </table>
+        </li>
+        </@menu>
+      </ul>
+    </li>
+    </@menu>
+    
+    
+    
+    <@menu all="${session.menu}" url="/um/">
+    <li> <a class="head">用户</a>
+      <ul>
+      <@menu all="${session.menu}" url="/admin/user/">
+        <li>
+        <table width="82%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+          <td height="38"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="33" height="28"><img src="/m/images/10.jpg" width="28" height="28"></td>
+              <td width="99"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td height="23" class="STYLE4" style="cursor:hand" onMouseOver="this.style.backgroundImage='url(/m/images/tab_bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#adb9c2'; "onmouseout="this.style.backgroundImage='url()';this.style.borderStyle='none'"><a href="/admin/user" target="rightFrame">会员</a></td>
+                  </tr>
+              </table></td>
+            </tr>
+          </table></td>
+        </tr>
+        </table>
+        </li>
+        </@menu>
+        <@menu all="${session.menu}" url="/admin/role/">
+        <li>
+        <table width="82%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+          <td height="38"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="33" height="28"><img src="/m/images/11.jpg" width="28" height="28"></td>
+              <td width="99"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td height="23" class="STYLE4" style="cursor:hand" onMouseOver="this.style.backgroundImage='url(/m/images/tab_bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#adb9c2'; "onmouseout="this.style.backgroundImage='url()';this.style.borderStyle='none'"><a href="/admin/role" target="rightFrame">角色</a></td>
+                  </tr>
+              </table></td>
+            </tr>
+          </table></td>
+        </tr>
+        </table>
+        </li>
+        </@menu>
+        <@menu all="${session.menu}" url="/admin/config/">
+        <li>
+        <table width="82%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+          <td height="38"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="33" height="28"><img src="/m/images/11.jpg" width="28" height="28"></td>
+              <td width="99"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td height="23" class="STYLE4" style="cursor:hand" onMouseOver="this.style.backgroundImage='url(/m/images/tab_bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#adb9c2'; "onmouseout="this.style.backgroundImage='url()';this.style.borderStyle='none'"><a href="/admin/config" target="rightFrame">设置</a></td>
+                  </tr>
+              </table></td>
+            </tr>
+          </table></td>
+        </tr>
+        </table>
+        </li>
+        </@menu>
+        <li>
+        <table width="82%" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+          <td height="38"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="33" height="28"><img src="/m/images/9.jpg" width="28" height="28"></td>
+              <td width="99"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr>
+                    <td height="23" class="STYLE4" style="cursor:hand" onMouseOver="this.style.backgroundImage='url(/m/images/tab_bg.gif)';this.style.borderStyle='solid';this.style.borderWidth='1';borderColor='#adb9c2'; "onmouseout="this.style.backgroundImage='url()';this.style.borderStyle='none'"><a href="/admin/config" target="rightFrame">设置</a></td>
+                  </tr>
+              </table></td>
+            </tr>
+          </table></td>
+        </tr>
+        </table>
+        </li>
+      </ul>
+    </li>
+    </@menu>
+    
+    
+    
+    
+  </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,4 @@
+jdbcUrl = jdbc:mysql://127.0.0.1/yun_web?characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+user = robin
+password = robin123
+devMode = true

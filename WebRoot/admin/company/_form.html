@@ -1,0 +1,31 @@
+<table width="100%" class="pn-ftable" cellpadding="2" cellspacing="1" border="0">
+<tr><td width="12%" class="pn-flabel pn-flabel-h"><span class="pn-frequired">*</span>生产厂商名称:</td><td colspan="1" width="38%" class="pn-fcontent"><input type="text" size="50" maxlength="100" name="company.name" value="${(company.name)!}" maxlength="100"/>${nameMsg!}</td>
+<td width="12%" class="pn-flabel pn-flabel-h">公司性质:</td><td colspan="1" width="38%" class="pn-fcontent"><input type="text" name="company.nature" value="${(company.nature)!}" size="30"/></td></tr>
+<tr><td width="12%" class="pn-flabel pn-flabel-h"><span class="pn-frequired"></span>业务类型:</td><td colspan="1" width="38%" class="pn-fcontent"><input type="text" autocomplete="off" maxlength="100" name="company.service" value="${(company.service)!}" maxlength="100"/>
+</td><td width="12%" class="pn-flabel pn-flabel-h"><span class="pn-frequired"></span>经营商品:</td><td colspan="1" width="38%" class="pn-fcontent"><input type="text" autocomplete="off" name="company.product" value="${(company.product)!}" maxlength="100"/>
+</td></tr>
+<tr><td width="12%" class="pn-flabel pn-flabel-h">联系人:</td><td colspan="1" width="38%" class="pn-fcontent"><input type="text" maxlength="100" name="company.linkman" value="${(company.linkman)!}" maxlength="100"/></td>
+<td width="12%" class="pn-flabel pn-flabel-h">性别:</td><td colspan="1" width="38%" class="pn-fcontent">
+<input type="radio" name="company.gender" id="gender2" value="2" checked>不详<input id="gender0" type="radio" name="company.gender" value="0">女<input id="gender1" type="radio" name="company.gender" value="1">男
+</td>
+</tr>
+<tr><td width="12%" class="pn-flabel pn-flabel-h">电话:</td><td colspan="1" width="38%" class="pn-fcontent"><input type="text" maxlength="50" name="company.phone" value="${(company.phone)!}" maxlength="50"/></td>
+<td width="12%" class="pn-flabel pn-flabel-h">手机:</td><td colspan="1" width="38%" class="pn-fcontent"><input type="text" maxlength="50" name="company.mobile" value="${(company.mobile)!}" maxlength="50"/></td></tr>
+<tr><td width="12%" class="pn-flabel pn-flabel-h"><span class="pn-frequired"></span>邮箱:</td><td colspan="1" width="38%" class="pn-fcontent"><input type="text" autocomplete="off" maxlength="100" name="company.email" value="${(company.email)!}" maxlength="100"/>
+</td><td width="12%" class="pn-flabel pn-flabel-h"><span class="pn-frequired"></span>公司地址:</td><td colspan="1" width="38%" class="pn-fcontent"><input type="text" autocomplete="off" name="company.address" value="${(company.address)!}" maxlength="100"/>
+</td></tr>
+<tr><td width="12%" class="pn-flabel pn-flabel-h"><span class="pn-frequired"></span>邮编:</td><td colspan="3" width="38%" class="pn-fcontent"><input type="text" autocomplete="off" maxlength="100" name="company.zipcode" value="${(company.zipcode)!}" maxlength="100"/>
+</td></tr>
+<tr><td width="12%" class="pn-flabel pn-flabel-h"><span class="pn-frequired"></span>公司简介:</td><td colspan="3" width="38%" class="pn-fcontent">
+<textarea name="company.intro" cols ="50" rows = "5">
+${(company.intro)!}
+</textarea>
+</td></tr>
+<tr><td colspan="4" class="pn-fbutton">
+<input type="hidden" name="company.id" value="${(company.id)!}" />
+<input type="submit" value="提交" class="submit"/> &nbsp; <input type="reset" value="重置" class="reset"/></td>
+</tr></table>
+<script type="text/javascript"> 
+var genderId = "${(company.gender)!}";
+$("#gender"+eval(genderId)).attr("checked",true);
+</script>

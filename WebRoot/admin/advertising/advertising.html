@@ -1,0 +1,148 @@
+ <#include "/admin/common/_layout.html"/> <@layout> 
+ <#include "/admin/advertising/top.html"/>
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<table width="100%" border="0" cellspacing="0" cellpadding="0"
+	style="table-layout: fixed;">
+</table>
+<tr>
+	<td>
+		<table width="100%" border="0" cellpadding="0" cellspacing="1"
+			bgcolor="#a8c7ce">
+			<tr>
+				<td width="4%" height="20" bgcolor="d3eaef" class="STYLE10">
+					<div align="center">
+						<input type="checkbox" onclick='Pn.checkbox("ids",this.checked)' />
+					</div>
+				</td>
+				<td width="8%" height="20" bgcolor="d3eaef" class="STYLE6">
+					<div align="center">
+						<span class="STYLE10">编号</span>
+					</div>
+				</td>
+				<td width="8%" height="20" bgcolor="d3eaef" class="STYLE6">
+					<div align="center">
+						<span class="STYLE10">产品名称</span>
+					</div>
+				</td>
+				<td width="8%" height="20" bgcolor="d3eaef" class="STYLE6">
+					<div align="center">
+						<span class="STYLE10">版位名称</span>
+					</div>
+				</td>
+				<td width="8%" height="20" bgcolor="d3eaef" class="STYLE6">
+					<div align="center">
+						<span class="STYLE10">图片路劲</span>
+					</div>
+				</td>
+				<td width="8%" height="20" bgcolor="d3eaef" class="STYLE6">
+					<div align="center">
+						<span class="STYLE10">链接地址</span>
+					</div>
+				</td>
+				<td width="8%" height="20" bgcolor="d3eaef" class="STYLE6">
+					<div align="center">
+						<span class="STYLE10">链接提示</span>
+					</div>
+				</td>
+				<td width="8%" height="20" bgcolor="d3eaef" class="STYLE6">
+					<div align="center">
+						<span class="STYLE10">图片类型</span>
+					</div>
+				</td>
+				<td width="8%" height="20" bgcolor="d3eaef" class="STYLE6">
+					<div align="center">
+						<span class="STYLE10">是否启用</span>
+					</div>
+				</td>
+				<td width="8%" height="20" bgcolor="d3eaef" class="STYLE6">
+					<div align="center">
+						<span class="STYLE10">基本操作</span>
+					</div>
+				</td>
+			</tr>
+			<form id="tableForm" method="post">
+				<#list advertisingPage.getList() as a>
+				<tr>
+					<td height="20" bgcolor="#FFFFFF">
+						<div align="center">
+							<input type="checkbox" name="ids" value="${a.id}" />
+						</div>
+					</td>
+					<td height="20" bgcolor="#FFFFFF" class="STYLE6">
+						<div align="center">
+							<span class="STYLE19">${a.id!}</span>
+						</div>
+					</td>
+					<td height="20" bgcolor="#FFFFFF" class="STYLE19">
+						<div align="center">
+							${a.advertise_name!}
+						</div>
+					</td>
+					<td height="20" bgcolor="#FFFFFF" class="STYLE19">
+						<div align="center">
+							${a.version_name!}
+						</div>
+					</td>
+					<td height="20" bgcolor="#FFFFFF" class="STYLE19">
+						<div align="center">
+							${a.image_url!}
+						</div>
+					</td>
+					<td height="20" bgcolor="#FFFFFF" class="STYLE19">
+						<div align="center">
+							${a.link_url!}
+						</div>
+					</td>
+					<td height="20" bgcolor="#FFFFFF" class="STYLE19">
+						<div align="center">
+							${a.link_prompt!}
+						</div>
+					</td>
+					<#if a.type=='0'>
+					<td height="20" bgcolor="#FFFFFF" class="STYLE19">
+						<div align="center">
+							广告
+						</div>
+					</td>
+					</#if> <#if a.using=='0'>
+					<td height="20" bgcolor="#FFFFFF" class="STYLE19">
+						<div align="center">
+							否
+						</div>
+					</td>
+					<#else>
+					<td height="20" bgcolor="#FFFFFF" class="STYLE19">
+						<div align="center">
+							是
+						</div>
+					</td>
+					</#if>
+					<td height="20" bgcolor="#FFFFFF">
+						<div align="center" class="STYLE21">
+							<a href="/admin/advertising/edit?id=${a.id}">修改</a>&nbsp;|&nbsp;
+						    <a href="javascript:if(confirm('确定删除这条信息?')){window.location.href='/admin/advertising/delete/${a.id}';}">删除</a> 
+						</div>
+					</td>
+				</tr>
+				</#list>
+			</form>
+		</table>
+	</td>
+</tr>
+<tr>
+	<td height="30">
+		<#include "/admin/common/_paginate.html" /> <@paginate
+		currentPage=advertisingPage.pageNumber
+		totalPage=advertisingPage.totalPage totalRow=advertisingPage.totalRow
+		actionUrl="/admin/advertising/list?page=" />
+	</td>
+</tr>
+</table>
+</@layout>
+<script type="text/javascript">
+function search() {
+	$("#searchForm").action = "/advertising";
+	$("#export").val("0");
+	$("#searchForm").submit();
+}
+</script>

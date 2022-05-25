@@ -1,0 +1,93 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<table width="100%" class="pn-ftable" cellpadding="2" cellspacing="1"
+	border="0">
+	<tr>
+		<td width="12%" class="pn-flabel pn-flabel-h">
+			<span class="pn-frequired">*</span>产品名称:
+		</td>
+		<td colspan="1" width="38%" class="pn-fcontent" align="left">
+			<input type="text" size="40" maxlength="100"
+				name="advertising.advertise_name" value="${(advertising.advertise_name)!}" />
+		</td>
+	</tr>
+	<tr>
+		<td width="12%" class="pn-flabel pn-flabel-h">
+			版位名称:
+		</td>
+		<td colspan="1" width="38%" class="pn-fcontent">
+			<input type="text" autocomplete="off" maxlength="100"
+				name="advertising.version_name" value="${(advertising.version_name)!}"
+				maxlength="100" />
+		</td>
+	</tr>
+	<tr>
+		<td width="12%" class="pn-flabel pn-flabel-h">
+			图片用途:
+		</td>
+		<td class="pn-fcontent">
+				<input type="radio" name="advertising.type"  value="0" checked="checked"/>广告
+			</td>
+	</tr>
+	<tr id="tr-media">
+        <td class="pn-flabel pn-flabel-h"><div>
+          	图片路径：
+        </div></td>
+        <td colspan="3" class="pn-fcontent">
+          <table border="0">
+          	<tr>
+          		<td class="pn-fcontent">
+          			<div>
+						<input type="text" readonly="readonly" id="path_type_imgFile" name="advertising.image_url" style="width:200px" value="${(advertising.image_url)!}"/>
+					</div>
+				</td>
+        		<td class="pn-fcontent">
+        			<span id="mfc_mediaFileText3" style="margin-top:7px;position:relative;display:block;width:300px;*width:300px;">
+					<input type='text' id='mediaFileText3'/>  
+					<input class="browse" type='button' value='浏览'/>
+					<input onchange="$('#mediaFileText3').val(this.value)" size="19" type="file" name="type_imgFile" id="type_imgFile" style="height:24px;opacity:0;filter:alpha(opacity=0);position:absolute;right:79px;top:2px;"/>
+					<input type="button" value="上传" onclick="uploadImg('type_imgFile','mediaFileText3');" class="upload-button"/>
+					</span> 
+					<input type="hidden" id="prototype_type_imgFile" name="prototype_type_imgFile"/>
+				</td>
+				<td align="center">
+				<#if advertising??>
+					<a class="lightbox" rel="bigimg" id="hrefImg_type_imgFile" href="${advertising.image_url!}">
+					<img id="preImg_type_imgFile" src="${(advertising.image_url)!}" alt="预览" style="width:100px;height:70px;background-color:#ccc;border:1px solid #333"/>
+					</a>
+				</#if>
+				</td>
+			</tr>
+		  </table>
+        </td>
+</tr>
+<tr>
+		<td width="12%" class="pn-flabel pn-flabel-h">
+			链接地址:
+		</td>
+		<td colspan="1" width="38%" class="pn-fcontent">
+			<input type="text" autocomplete="off" maxlength="100"
+				name="advertising.link_url" value="${(advertising.link_url)!}"
+				maxlength="100" />
+		</td>
+	</tr>
+	<tr>
+		<td width="12%" class="pn-flabel pn-flabel-h">
+			链接提示:
+		</td>
+		<td colspan="1" width="38%" class="pn-fcontent">
+			<input type="text" autocomplete="off" maxlength="100"
+				name="advertising.link_prompt" value="${(advertising.link_prompt)!}"
+				maxlength="100" />
+		</td>
+	</tr>
+	<tr>
+		<td colspan="4" class="pn-fbutton">
+			<input type="hidden" name="advertising.id"
+				value="${(advertising.id)!}" />
+			<input type="submit" value="提交" class="submit" />
+			&nbsp;
+			<input type="reset" value="重置" class="reset" />
+		</td>
+	</tr>
+</table>

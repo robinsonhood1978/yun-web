@@ -1,0 +1,92 @@
+<script src="/m/js/jquery.lightbox.js" type="text/javascript"></script>
+<script type="text/javascript"> 
+$(document).ready(function(){
+			$(".lightbox").lightbox({
+			    fitToScreen: true,
+			    imageClickClose: false
+		    });
+});
+//上传附件
+function uploadAttachment(n) {
+	var af = $('#attachmentFile'+n);
+	//检查是否选择了文件
+	if(af.val()=='') {
+		alert('请选择要上传的文件');
+		return;
+	}
+	//将file移动至上传表单
+	$('#attachmentContent').empty();
+	$('#attachmentContent').append(af);
+	//复制一个file放至原处
+	$('#afc'+n).append(af.clone().attr('value',''));
+	$('#attachmentText'+n).attr('value','');
+	//修改属性
+	af.attr('id','');
+	//其他表单
+	$('#attachmentNum').val(n);
+	$('#attachmentForm').submit();
+}
+function uploadThumbnailAttachment(n) {
+	var af = $('#attachmentThumbnailFile'+n);
+	//检查是否选择了文件
+	if(af.val()=='') {
+		alert('请选择要上传的文件');
+		return;
+	}
+	//将file移动至上传表单
+	$('#attachmentThumbnailContent').empty();
+	$('#attachmentThumbnailContent').append(af);
+	//复制一个file放至原处
+	$('#afcThumbnail'+n).append(af.clone().attr('value',''));
+	$('#attachmentThumbnailText'+n).attr('value','');
+	//修改属性
+	af.attr('id','');
+	//其他表单
+	$('#attachmentThumbnailNum').val(n);
+	$('#attachmentThumbnailForm').submit();
+}
+//预览图片
+function previewImg(n) {
+	var img = $("#attachmentPaths"+n).val();
+	if(img!="") {
+		if(img.indexOf("?")==-1) {
+			$("#preImg"+n).attr("src",img+"?d="+new Date()*1);
+		} else {
+			$("#preImg"+n).attr("src",img+"&d="+new Date()*1);
+		}
+		/*if(!$("#preImg"+n).attr("noResize")) {
+			$("#preImg"+n).css("width","auto");
+			$("#preImg"+n).css("height","auto");
+		}*/
+		$("#preImg"+n).css("width","100");
+		$("#preImg"+n).css("height","70");
+		$("#hrefImg"+n).attr("href",img);
+	} else {
+		$("#preImg"+n).removeAttr("src");		
+	}
+}
+function previewThumbnailImg(n) {
+	var img = $("#attachmentThumbnailPaths"+n).val();
+	if(img!="") {
+		if(img.indexOf("?")==-1) {
+			$("#preThumbnailImg"+n).attr("src",img+"?d="+new Date()*1);
+		} else {
+			$("#preThumbnailImg"+n).attr("src",img+"&d="+new Date()*1);
+		}
+		$("#preThumbnailImg"+n).css("width","100");
+		$("#preThumbnailImg"+n).css("height","70");
+		$("#hrefThumbnailImg"+n).attr("href",img);
+	} else {
+		$("#preThumbnailImg"+n).removeAttr("src");		
+	}
+}
+</script>
+<form id="attachmentForm" action="/admin/goods/att" method="post" enctype="multipart/form-data" target="att_iframe" style="display:none;width:0px;height:0px;">
+<span id="attachmentContent"></span>
+<input type="hidden" id="attachmentNum" name="attachmentNum"/>
+</form>
+<form id="attachmentThumbnailForm" action="/admin/goods/tnatt" method="post" enctype="multipart/form-data" target="att_iframe" style="display:none;width:0px;height:0px;">
+<span id="attachmentThumbnailContent"></span>
+<input type="hidden" id="attachmentThumbnailNum" name="attachmentThumbnailNum"/>
+</form>
+<iframe name="att_iframe" frameborder="0" border="0" style="display:none;width:0px;height:0px;"></iframe>

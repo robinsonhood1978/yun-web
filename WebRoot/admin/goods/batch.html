@@ -1,0 +1,56 @@
+<#include "/admin/common/_layout.html" />
+<@layout>
+<style type="text/css">
+<!--
+.text{width:200px;float:left;margin-right:5px;}
+.upfile{width:59px; height:24px;background:url(/m/images/theme/button.png);*vertical-align:3px;float:left;}
+#upfile{width:59px; height:24px;margin-left:0px;*margin-left:-3px;filter:alpha(opacity=0);-moz-opacity:0;opacity:0;cursor:pointer;}
+-->
+</style>
+<div class="box-positon">
+	<div class="rpos">当前位置: 商品信息管理 - 添加</div>
+	<form class="ropt">
+		<input type="submit" value="返回列表" onclick="this.form.action='/admin/goods';" class="return-button"/>
+	</form>
+	<form class="ropt">
+		<a href="/tpl/goodsTpl.xls"><img src="/m/images/tpl.jpg"></a>
+	</form>
+	
+	<div class="clear"></div>
+</div>
+<div class="body-box">
+	<form id="myForm" name="myForm" action="/admin/goods/bsave" method="post" enctype="multipart/form-data">
+	<table width="100%" class="pn-ftable" cellpadding="2" cellspacing="1" border="0">
+	<#if resultMsg??>
+	<tr><td colspan="4">${resultMsg!}</td></tr>
+	</#if>
+	<tr><td width="12%" class="pn-flabel pn-flabel-h">商品目录:</td><td colspan="3" width="38%" class="pn-fcontent">
+<select name="goods.cat_id" id="cat_id" WIDTH="200" STYLE="width:200px">
+<#if catList?? && catList?size gt 0>
+<#assign origdepth=catList[0].depth+1/>
+<#list catList as c>
+	<option value="${c.id}"><#if c.depth gte origdepth><#list origdepth..c.depth as i>&nbsp;&nbsp;</#list>></#if>${c.name}</option>
+</#list>
+</#if>
+</select>
+</td></tr>
+<tr><td width="12%" class="pn-flabel pn-flabel-h">生产厂商:</td><td colspan="3" width="38%" class="pn-fcontent">
+<select name="goods.company_id" id="company_id">
+		<#list companyList as c>
+			<option value="${(c.id)!}">${(c.name)!}</option>
+		</#list>
+	</select>
+</td>
+</tr>
+<tr><td width="12%" class="pn-flabel pn-flabel-h"><span class="pn-frequired">*</span>商品EXCEL文档:</td>
+<td colspan="3" width="38%" class="pn-fcontent">
+<input type="file" name="upExcel" value="浏览"/><font color='red'>${resultMsg!}</font>
+</td>
+</tr>	
+	<tr><td colspan="4" align="center" class="pn-fcontent">
+	<input value="上传" class="upload-button" type="submit">
+	</td>
+	</tr>	
+	</form>
+</div>
+</@layout>

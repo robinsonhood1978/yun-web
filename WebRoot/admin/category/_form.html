@@ -1,0 +1,35 @@
+<table width="100%" class="pn-ftable" cellpadding="2" cellspacing="1" border="0">
+<#if resultMsg??>
+<tr><td colspan="2"><font color="blue">${resultMsg!}</font></td></tr>
+</#if>
+<tr><td width="12%" class="pn-flabel pn-flabel-h"><span class="pn-frequired">*</span>商品目录名称:</td><td class="pn-fcontent"><input type="text" maxlength="100" name="category.name" value="${(category.name)!}" maxlength="100"/>${nameMsg!}</td>
+</tr>
+<tr><td width="12%" class="pn-flabel pn-flabel-h"><span class="pn-frequired">*</span>上级栏目:</td><td class="pn-fcontent">
+<#if parentName??>
+${parentName!}
+<input type="hidden" name="category.parent_id" value="${(category.parent_id)!}" />
+<#else>
+<select name="category.parent_id" id="parent_id"  WIDTH="200" STYLE="width:200px">
+<option value="0">顶级栏目</option>
+<#if categoryList?? && categoryList?size gt 0>
+<#assign origdepth=categoryList[0].depth+1/>
+<#list categoryList as c>
+	<option value="${c.id}"><#if c.depth gte origdepth><#list origdepth..c.depth as i>&nbsp;&nbsp;</#list>></#if>${c.name}</option>
+</#list>
+</#if>
+	</select>
+	</#if>
+</td></tr>
+<tr><td width="12%" class="pn-flabel pn-flabel-h">顺序号:</td><td class="pn-fcontent"><input type="text" maxlength="100" name="category.priority" value="${(category.priority)!}" maxlength="100"/></td>
+</tr>
+<tr><td colspan="4" class="pn-fbutton">
+<input type="hidden" name="category.id" value="${(category.id)!}" />
+<input type="hidden" name="root" value="${(root)!}" />
+<input type="submit" value="提交" class="submit"/> &nbsp; <input type="reset" value="重置" class="reset"/>
+</td></tr></table>
+<script type="text/javascript"> 
+<#if category?? && category.parent_id??>
+var parentId = "${category.parent_id!}";
+$("#parent_id").val(parentId);
+</#if>
+</script>
